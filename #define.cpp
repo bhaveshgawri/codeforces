@@ -1,4 +1,4 @@
-#include <btis/stdc++.h>
+#include <bits/stdc++.h>
 
 #define ll 		long long int
 #define u64 	unsigned long long int
@@ -20,13 +20,15 @@
 #define lb(x, k) lower_bound(all(x), k)-x.begin()
 #define ub(x, k) upper_bound(all(x), k)-x.begin()
 
-#define imx INT_MAX
-#define imn INT_MIN
-#define lmx LLONG_MAX
-#define lmn LLONG_MIN
+#define inf  INT_MAX
+#define minf INT_MIN
+#define INF  LLONG_MAX
+#define MINF LLONG_MIN
 
 #define f 	first
 #define s 	second
+
+using namespace std;
 
 typedef pair<int, int> ii;
 typedef pair<ll, ll> II;
@@ -38,10 +40,6 @@ typedef vector<vii> vvii;
 
 const int MAX = 1e5 + 4;
 const int MOD = 1e9 + 7;
-const int inf = (1<<31)-1;
-const ll INF = (1<<63)-1ll;
-
-using namespace std;
 
 int main(){
 	nfs;
