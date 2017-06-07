@@ -3,16 +3,14 @@
 #define ll      long long int
 #define u64     unsigned long long int
 
-#define nl         "\n"
-#define pb         push_back
-#define ppb        pop_back
-#define pf         push_front
-#define ppf        pop_front
-#define sz(x)      x.size()
-#define all(x)     x.begin(), x.end()
-#define init(x, k) fill(all(x), k)
-#define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
+#define nl      "\n"
+#define pb      push_back
+#define ppb     pop_back
+#define pf      push_front
+#define ppf     pop_front
+#define sz(x)   x.size()
+#define all(x)  x.begin(), x.end()
+#define nfs     ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define _max(a, b, c)   max(a, max(b, c))
 #define _min(a, b, c)   min(a, min(b, c))
@@ -27,8 +25,8 @@
 #define INF      LLONG_MAX
 #define MINF     LLONG_MIN
 
-#define f    first
-#define s    second
+#define f   first
+#define s 	second
 
 using namespace std;
 
@@ -45,5 +43,19 @@ const int MOD = 1e9 + 7;
 
 int main(){
 	nfs;
-
+	string s;
+	cin>>s;
+	vi ans(sz(s), 0);
+	for (int i=1;i<sz(s);i++){
+		if (s[i-1]==s[i])
+			ans[i]=ans[i-1]+1;
+		else
+			ans[i]=ans[i-1];
+	}
+	int q, l, r;
+	cin>>q;
+	while(q--){
+		cin>>l>>r;
+		cout<<ans[r-1]-ans[l-1]<<nl;
+	}
 }

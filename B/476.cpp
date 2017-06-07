@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+
+#define ll      long long int
+#define u64     unsigned long long int
+
+#define nl      "\n"
+#define pb      push_back
+#define ppb     pop_back
+#define pf      push_front
+#define ppf     pop_front
+#define sz(x)   x.size()
+#define all(x)  x.begin(), x.end()
+#define nfs     ios_base::sync_with_stdio(false);cin.tie(NULL)
+
+#define _max(a, b, c)   max(a, max(b, c))
+#define _min(a, b, c)   min(a, min(b, c))
+#define mxe(a)          *max_element(all(a))
+#define mne(a)          *min_element(all(a))
+
+#define lb(x, k) lower_bound(all(x), k)-x.begin()
+#define ub(x, k) upper_bound(all(x), k)-x.begin()
+
+#define inf      INT_MAX
+#define minf     INT_MIN
+#define INF      LLONG_MAX
+#define MINF     LLONG_MIN
+
+#define f    first
+#define s    second
+
+using namespace std;
+
+typedef pair<int, int> ii;
+typedef pair<ll, ll> II;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef vector<vi> vvi;
+typedef vector<ii> vii;
+typedef vector<vii> vvii;
+
+const int MAX = 1e5 + 4;
+const int MOD = 1e9 + 7;
+
+int C(int n, int r) {
+    if(r > n / 2) r = n - r;
+    long long ans = 1;
+    int i;
+
+    for(i = 1; i <= r; i++) {
+        ans *= n - r + i;
+        ans /= i;
+    }
+    return ans;
+}
+
+int main(){
+	nfs;
+	string cor;
+	string inc;
+	cin>>cor;
+	int pos=0;
+	for (int i=0;i<sz(cor);i++){
+		if (cor[i]=='+'){
+			pos++;
+		}
+		else
+			pos--;
+	}
+	cin>>inc;
+	int exp_pos=0;
+	int qc=0;
+	for (int i=0;i<sz(inc);i++){
+		if (inc[i]=='+')
+			exp_pos++;
+		else if(inc[i]=='-')
+			exp_pos--;
+		else
+			qc++;
+	}
+	vi v;
+	for (int i=0;i<=qc;i++){
+		int times = C(qc, i);
+		for (int j=0;j<times;j++){
+			v.pb(qc-2*i+exp_pos);
+		}
+	}
+	int numerator=0, denominator=0;
+	for (int i: v){
+		if (i==pos)
+			numerator++;
+	}
+	denominator=sz(v);
+	double ans = (double(numerator))/denominator;
+	if (pos==exp_pos && qc==0)
+		cout<<fixed<<setprecision(10)<<1.0000000000<<nl;
+	else if (pos!=exp_pos && qc==0)
+		cout<<fixed<<setprecision(10)<<0.0000000000<<nl;
+	else
+		cout<<fixed<<setprecision(10)<<ans<<nl;
+}
