@@ -42,61 +42,51 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
+vvii N(1004);
+vi visited(1004, 0);
+vi tank, tap;
+vi idegree(1004, 0);
+vi odegree(1004, 0);
 
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
+int dfs(int house, int& tap){
+	int len=inf;
+	if (!visited[house]){
+		visited[house]=1;
+		for (auto conn: N[house]){
+			len = min(conn.ss, dfs(conn.ff, tap));
 		}
 	}
+	if (len==inf){
+		tap=house;
+	}
+	return len;
 }
+
 
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+	int n, p, a, b, d;
+	cin>>n>>p;
+	for (int i=0;i<p;i++){
+		cin>>a>>b>>d;
+		N[a].pb({b, d});
+		idegree[b]=1;
+		odegree[a]=1;
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
-		return 0;
-	}
-	component = max(component, n/3);
 	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
-			}
+		if (idegree[i]==1 && odegree[i]==0){
+			tap.pb(i);
+		}
+		else if (idegree[i]==0 && odegree[i]==1){
+			tank.pb(i);
 		}
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
+	cout<<tank.size()<<nl;
+	for (int i: tank){
+		if (!visited[i]){
+			int tap;
+			cout<<i<<" "<<tap<<" "<<dfs(i, tap)<<nl;
 		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
 	}
+
 }

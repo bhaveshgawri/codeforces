@@ -42,19 +42,17 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
+vvi N(150004);
+vi visited(150004);
+vvi table(150004);
+vi degree(150004);
 
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
-		}
+void dfs(int node, int component){
+	if (!visited[node]){
+		visited[node]=1;
+		table[component].pb(node);
+		for (int i: N[node])
+			dfs(i, component);
 	}
 }
 
@@ -64,39 +62,28 @@ int main(){
 	cin>>n>>m;
 	for (int i=0;i<m;i++){
 		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+		N[p].pb(q);
+		N[q].pb(p);
+		degree[p]++;
+		degree[q]++;
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
-		return 0;
-	}
-	component = max(component, n/3);
+	int components=0;
 	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
-			}
-		}
+		if (!visited[i])
+			components++, dfs(i, components);
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
+
+	for (int i=1;i<=components;i++){
+		ll ver = table[i].size();
+		ll sum=0ll;
+		for (int j: table[i]){
+			sum += degree[j];
+		}
+		sum/=2;
+		if (sum!=(ver*ver-ver)/2){
+			cout<<"NO"<<nl;
 			return 0;
 		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
 	}
+	cout<<"YES"<<nl;
 }

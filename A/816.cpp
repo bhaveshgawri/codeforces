@@ -42,61 +42,35 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
-
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
-		}
-	}
+int rev(int t){
+	int p, q;
+	p=t%10;
+	q=t/10;
+	return 10*p+q;
 }
 
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
-	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
+	int h, m;
+	char _;
+	cin>>h>>_>>m;
+	int count=0;
+	if (h==rev(m)){
+		cout<<0<<nl;
 		return 0;
 	}
-	component = max(component, n/3);
-	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
+	else{
+		while(m!=rev(h)){
+			m++;
+			count++;
+			if (m==60){
+				m=0;
+				h++;
+				if (h==24){
+					h=0;
 				}
 			}
 		}
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
-		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
-	}
+	cout<<count<<nl;
 }

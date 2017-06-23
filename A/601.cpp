@@ -42,19 +42,49 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
+vvi R(404);
+vvi T(404);
+vi visited(404, 0);
+vi dist(404);
+int conn[404][404];
 
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
-		}
+void bfs(int n, char c){
+	init(visited, 0);
+	init(dist, -1);
+	queue<int> q;
+	q.push(1);
+	visited[1]=1;
+	dist[1]=0;
+	int flag=0;
+	while(!q.empty()){
+		int node = q.front();
+		q.pop();
+		if (c=='r')
+			for(int i: R[node]){
+				if (visited[i]==0){
+					q.push(i);
+					visited[i]=1;
+					dist[i]=dist[node]+1;
+					if (i == n){
+						flag=1;
+						break;
+					}
+				}
+			}
+		else
+			for(int i: T[node]){
+				if (visited[i]==0){
+					q.push(i);
+					visited[i]=1;
+					dist[i]=dist[node]+1;
+					if (i == n){
+						flag=1;
+						break;
+					}
+				}
+			}
+		if (flag==1)
+			break;
 	}
 }
 
@@ -64,39 +94,25 @@ int main(){
 	cin>>n>>m;
 	for (int i=0;i<m;i++){
 		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+		R[p].pb(q);
+		R[q].pb(p);
+		conn[p][q]=conn[q][p]=1;
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
-		return 0;
-	}
-	component = max(component, n/3);
 	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
+		for (int j=1;j<=n;j++){
+			if (conn[i][j]==0){
+				T[i].pb(j);
 			}
 		}
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
-		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
-	}
+	int p1, p2, ans;
+	bfs(n, 'r');
+	p1=dist[n];
+	bfs(n, 't');
+	p2=dist[n];
+	ans = max(p1, p2);
+	if (ans>1)
+		cout<<ans<<nl;
+	else
+		cout<<-1<<nl;
 }

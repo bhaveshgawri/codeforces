@@ -42,61 +42,60 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
+int mat[1001][1001];
+int seq[7][1001];
+vvi v(1001);
+vi dist(1001);
+int ans = -inf;
+vi visited(1001);
 
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
+void dfs(int node){
+	if (!visited[node]){
+		visited[node]=1;
+		for (int i: v[node]){
+			dfs(i);
+			dist[node] = max(dist[node], dist[i]+1);
 		}
+		dist[node]=max(dist[node], 1);
+		ans=max(ans, dist[node]);
 	}
 }
 
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+	int n, k;
+	cin>>n>>k;
+	for (int i=1;i<=k;i++){
+		for (int j=0;j<n;j++){
+			cin>>seq[i][j];
+		}
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
-		return 0;
+	for (int i=0;i<n;i++){
+		for (int j=i+1;j<n;j++){
+			mat[seq[1][i]][seq[1][j]] = 1;
+		}
 	}
-	component = max(component, n/3);
-	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
+	for (int i=2;i<=k;i++){
+		for (int j=0;j<n;j++){
+			for (int jj=0;jj<j+1;jj++){
+				mat[seq[i][j]][seq[i][jj]] = 0;
+			}
+			for (int jj=j+1;jj<n;jj++){
+				mat[seq[i][j]][seq[i][jj]] &= 1;
 			}
 		}
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
+	for (int i=1;i<=n;i++){
+		for (int j=1;j<=n;j++){
+			if (mat[i][j]==1){
+				v[i].pb(j);
+			}
 		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
 	}
+	for (int i=1;i<=n;i++){
+		if (visited[i]==0){
+			dfs(i);
+		}
+	}
+	cout<<ans<<nl;
 }

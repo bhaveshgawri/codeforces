@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 
 #define ll      long long int
+#define u64     unsigned long long int
 
 #define nl         "\n"
 #define pb         push_back
@@ -9,24 +10,25 @@
 #define ppf        pop_front
 #define sz(x)      x.size()
 #define all(x)     x.begin(), x.end()
-#define Sort(x)    sort(all(x))
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
 #define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
-#define Max(a, b, c)   max(a, max(b, c))
-#define Min(a, b, c)   min(a, min(b, c))
-#define mxe(a)        *max_element(all(a))
-#define mne(a)        *min_element(all(a))
+#define _max(a, b, c)   max(a, max(b, c))
+#define _min(a, b, c)   min(a, min(b, c))
+#define mxe(a)          *max_element(all(a))
+#define mne(a)          *min_element(all(a))
 
-#define lb(x, k)   lower_bound(all(x), k)-x.begin()
-#define ub(x, k)   upper_bound(all(x), k)-x.begin()
+#define lb(x, k) lower_bound(all(x), k)-x.begin()
+#define ub(x, k) upper_bound(all(x), k)-x.begin()
 
 #define inf      INT_MAX
+#define minf     INT_MIN
 #define INF      LLONG_MAX
+#define MINF     LLONG_MIN
 
-#define ff    first
-#define ss    second
+#define f    first
+#define s    second
 
 using namespace std;
 
@@ -38,11 +40,21 @@ typedef vector<vi> vvi;
 typedef vector<ii> vii;
 typedef vector<vii> vvii;
 
-const int Max1 = 1e5 + 4;
-const int Max2 = 2e5 + 4;
-const int Mod = 1e9 + 7;
+const int MAX = 1e5 + 4;
+const int MOD = 1e9 + 7;
 
 int main(){
 	nfs;
-
+	int n, p;
+	cin>>n;
+	vl count(MAX, 0), ans(MAX, 0);
+	for (int i=0;i<n;i++){
+		cin>>p;
+		count[p]++;
+	}
+	ans[1]=count[1];
+	for (int i=2;i<MAX;i++){
+		ans[i] =  max(ans[i-1], ans[i-2]+i*count[i]);
+	}
+	cout<<ans[MAX-1]<<nl;
 }

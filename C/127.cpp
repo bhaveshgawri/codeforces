@@ -1,3 +1,6 @@
+//code doesn't work correctly on codeforces compiler for test #8(due to ll) but
+//works fine on other compilers like on hackerrank, on gcc 6.3 on local machine
+
 #include <bits/stdc++.h>
 
 #define ll      long long int
@@ -42,61 +45,41 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
-
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
-		}
-	}
-}
-
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
-	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
+	vl one, two;
+	ll t1, t2, x1, x2, t0;
+	cin>>t1>>t2>>x1>>x2>>t0;
+	if (t1==t0 && t2==t0){
+		ll minn = min(x1, x2);
+		cout<<minn<<" "<<minn<<nl;
 		return 0;
 	}
-	component = max(component, n/3);
-	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
-			}
+	else if (t1==t0){
+		cout<<x1<<" "<<0<<nl;
+		return 0;
+	}
+	else if (t2==t0){
+		cout<<0<<" "<<x2<<nl;
+		return 0;
+	}
+	double ratio = double(t2-t0)/(t0-t1);
+	ll max_2 = max(x2, (ll)ratio*x1);
+	double variable=DBL_MAX;
+	ll index;
+	//cout<<dot(5)<<ratio<<nl;
+	for (ll i=1;i<=max_2;i++){
+		if (i*ratio>x1)
+			break;
+		ll r = i*ratio;
+		double opti = double(t1*r+t2*i)/(i+r);
+		//cout<<i*ratio<<" "<<i<<" "<<opti<<nl;
+		two.pb(i);
+		one.pb(ratio*i);
+		if (opti<=variable){
+			variable=opti;
+			index=i;
 		}
 	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
-		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
-	}
+	cout<<one[index-1]<<" "<<two[index-1]<<nl;
 }

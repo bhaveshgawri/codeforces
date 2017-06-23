@@ -42,61 +42,47 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
-
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
-		}
-	}
-}
-
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+	int n;
+	cin>>n;
+	vi a(n), count(10*Max1, 0);
+	int _max=-inf;
+	for (int i=0;i<n;i++){
+		cin>>a[i];
+		count[a[i]]++;
+		if (count[a[i]]>_max)
+			_max=count[a[i]];
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
-		return 0;
+	vii v;
+	for (int i=0;i<n;i++){
+		if (count[a[i]]==_max){
+			v.pb({a[i], i});
+		}
 	}
-	component = max(component, n/3);
-	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
+	sort(all(v));
+	int ans = inf;
+	int ansi, ansj;
+	for (int i=0;i<v.size();i++){
+		int mx=-inf;
+		int mn=inf;
+		int j=i;
+		while(v[i].ff==v[i+1].ff){
+			i++;
+		}
+		for (int k=j;k<=i;k++){
+			if (mx<=v[k].ss){
+				mx=v[k].ss;
+			}
+			if (mn>=v[k].ss){
+				mn=v[k].ss;
 			}
 		}
-	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
+		if (mx-mn<ans){
+			ansj=mx;
+			ansi=mn;
+			ans=mx-mn;
 		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
 	}
+	cout<<++ansi<<" "<<++ansj<<nl;
 }

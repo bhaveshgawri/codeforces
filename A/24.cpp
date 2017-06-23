@@ -42,61 +42,54 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vi selected(104);
-vvi T(104);
-vvi team(104);
-set<int> s;
+vvii r(104);
+vi source(104, 0), sink(104, 0);
+vi visited(104, 0), counta(104, 0), countb(104, 0);
+int sum1=0, sum2=0, flag=0;
+int start=-1;
 
-void select(int student, int number){
-	if (!selected[student]){
-		selected[student]=1;
-		selected[student]=1;
-		team[number].pb(student);
-		for (int team_mate: T[student]){
-			select(team_mate, number);
+
+void dfs(int node){
+	if (visited[node]==0){
+		visited[node]=1;
+		for (auto i: r[node]){
+			if (flag==0 && visited[i.ff]==0)
+				sum1+=i.ss;
+			else if (flag==1 && visited[i.ff]==0)
+				sum2+=i.ss;
+			if ((source[i.ff]==1 || sink[i.ff]==1) && visited[i.ff]==0)
+				flag=!flag;
+			dfs(i.ff);
 		}
 	}
 }
 
 int main(){
 	nfs;
-	int n, m, p, q;
-	cin>>n>>m;
-	for (int i=0;i<m;i++){
-		cin>>p>>q;
-		T[p].pb(q);
-		T[q].pb(p);
-		s.insert(p);
-		s.insert(q);
+	int n, a, b, p, tot_cost=0;
+	cin>>n;
+	for (int i=1;i<=n;i++){
+		cin>>a>>b>>p;
+		r[a].pb({b, p});
+		r[b].pb({a, p});
+		countb[b]++;
+		counta[a]++;
+		if (counta[a]==2)
+			source[a]=1;
+		if (countb[b]==2)
+			sink[b]=1;
 	}
-	int component=0;
-	for (auto i: s)
-		if (!selected[i])
-			component++, select(i, component);
-	if (n%3!=0){
-		cout<<-1<<nl;
+	for (int i=1;i<104;i++){
+		if (source[i]==1){
+			start = i;
+			break;
+		}
+	}
+	if (start==-1){
+		cout<<0<<nl;
 		return 0;
 	}
-	component = max(component, n/3);
-	for (int i=1;i<=n;i++){
-		if (selected[i]==0){
-			for (int t=1;t<=component;t++){
-				if (sz(team[t])<3){
-					team[t].pb(i);
-					selected[t]=1;
-					break;
-				}
-			}
-		}
-	}
-	for (int t=1;t<=component;t++)
-		if (sz(team[t])!=3){
-			cout<<-1<<nl;
-			return 0;
-		}
-	for (int i=1;i<=component;i++){
-		for (int j: team[i])
-			cout<<j<<" ";
-		cout<<nl;
-	}
+	dfs(start);
+	sum2+=r[start][1].ss;
+	cout<<min(sum1, sum2)<<nl;
 }
