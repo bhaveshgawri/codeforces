@@ -46,5 +46,15 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	string s;
+	cin>>s;
+	int ans=0;
+	while (s.length()!=1){
+		int sum=0;
+		for (char i: s)
+			sum += i-'0';
+		s = to_string(sum);
+		ans++;
+	}
+	cout<<ans<<nl;
 }

@@ -43,60 +43,66 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-
-bool isalph(char c){
-	if (c>='a' && c<='z')
-		return true;
-	else return false;
-}
-bool isnum(char c){
-	if (c>='0' && c<='9')
-		return true;
-	else return false;
-}
-bool ischar(char c){
-	if (c=='&' || c=='#' || c=='*')
-		return true;
-	else return false;
-}
-
 int main(){
 	nfs;
 	no_step;
 	int n, m;
-	cin>>n>>m;
-	vector<string> vs(n);
-	vector<pair<int ,ii> > c(54, {inf/4, {inf/4, inf/4}});
-	for (int i=0;i<n;i++){
-		cin>>vs[i];
-	}
-	for (int i=0;i<n;i++){
-		for (int j=0;j<=m/2;j++){
-			if (ischar(vs[i][j]))
-				c[i].ff = min(c[i].ff, j);
-			else if (isnum(vs[i][j]))
-				c[i].ss.ff = min(c[i].ss.ff, j);
-			else if (isalph(vs[i][j]))
-				c[i].ss.ss = min(c[i].ss.ss, j);
-		}
-		for (int j=m-1;j>m/2;j--){
-			if (ischar(vs[i][j]))
-				c[i].ff = min(c[i].ff, m-j);
-			else if (isnum(vs[i][j]))
-				c[i].ss.ff = min(c[i].ss.ff, m-j);
-			else if (isalph(vs[i][j]))
-				c[i].ss.ss = min(c[i].ss.ss, m-j);
-		}
-	}
-	int ans = inf;
-	for (int i=0;i<n;i++){
-		for (int j=0;j<n;j++){
-			for (int k=0;k<n;k++){
-				if (i!=j && j!=k){
-					ans = min(ans, c[i].ff+c[j].ss.ff+c[k].ss.ss);
-				}
+	char r;
+	ii start;
+	int flag=0;
+	cin>>n>>m>>r;
+	vector<vector<char>> v(n+1, vector<char>(m+1));
+	map<char, int> mp;
+	for (int i=1;i<=n;i++){
+		for (int j=1;j<=m;j++){
+			cin>>v[i][j];
+			if (flag==0 && v[i][j]==r){
+				start = {i, j};
+				flag=1;
 			}
 		}
 	}
+	ii end=start;
+	int p=start.ff, q=start.ss;
+	while (v[p][q]==r){
+		if (p==n)break;
+		p++;
+		if (v[p][q]==r){
+			end.ff = p;
+		}
+	}
+	p=start.ff;
+	while (v[p][q]==r){
+		if (q==m)break;
+		q++;
+		if (v[p][q]==r){
+			end.ss = q;
+		}
+	}
+/*	cout<<start.ff<<" "<<start.ss<<nl;
+	cout<<end.ff<<" "<<end.ss<<nl;*/
+	if (start.ff!=1)
+		for (int i=start.ss;i<=min(n, end.ss);i++)
+			if (v[start.ff-1][i]!='.')
+				mp[v[start.ff-1][i]]=1;
+
+	if(end.ff!=n)
+		for (int i=start.ss;i<=min(n, end.ss);i++)
+			if (v[end.ff+1][i]!='.')
+				mp[v[end.ff+1][i]]=1;
+	if (start.ss!=1)
+		for (int i=start.ff;i<=min(m, end.ff);i++)
+			if (v[i][start.ss-1]!='.')
+				mp[v[i][start.ss-1]]=1;
+	if (end.ss!=m)
+		for (int i=start.ff;i<=min(m, end.ff);i++){
+			if (v[i][end.ss+1]!='.'){
+				mp[v[i][end.ss+1]]=1;
+			}
+		}
+	int ans=0;
+	for (auto i: mp)
+		if (i.ss==1)
+			ans++;
 	cout<<ans<<nl;
 }

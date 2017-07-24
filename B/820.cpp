@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +44,16 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int n, a;
+	cin>>n>>a;
+	double ang=180.0/n;
+	int min_idx=99999999;
+	double min_ang=9999999.0;
+	for (int i=1;i<n-1;i++){
+		if ((double)abs(ang*i-a)<min_ang){
+			min_ang = (double)abs(ang*i-a);
+			min_idx = n-i+1;
+		}
+	}
+	cout<<1<<" "<<2<<" "<<min_idx<<nl;
 }

@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +44,19 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int m, n;
+	cin>>m>>n;
+	vvi t(m+1, vi(n+1, 0));
+	for (int i=1;i<=m;i++){
+		for (int j=1;j<=n;j++){
+			cin>>t[i][j];
+		}
+	}
+	for (int j=1;j<=n;j++){
+		for (int i=1;i<=m;i++){
+			t[i][j] += max(t[i-1][j], t[i][j-1]);
+			if (j==n)cout<<t[i][n]<<" ";
+		}
+	}
+	cout<<nl;
 }

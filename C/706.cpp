@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -43,8 +42,38 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+vector<string> vs(Max1);
+vi cost(Max1);
+
+void rec(int idx){
+	if (idx<=1){
+		return 0;
+	}
+	else if (idx==2){
+		int ans=inf;
+		if (vs[2]>vs[1])
+			return 0;
+		else if (reverse(all(s[1]))<s[2]){
+			ans=min(ans, cost[1]);
+		}
+		else if ()
+	}
+
+}
+
 int main(){
 	nfs;
-	no_step;
-	
+	int n;
+	cin>>n;
+	string s;
+	int c;
+	for (int i=1;i<=n;i++){
+		cin>>c;
+		cost[i]=c;
+	}
+	for (int i=1;i<=n;i++){
+		cin>>s;
+		vs[i]=s;
+	}
+	rec(n);
 }

@@ -9,10 +9,10 @@
 #define ppf        pop_front
 #define sz(x)      x.size()
 #define all(x)     x.begin(), x.end()
+#define Sort(x)    sort(all(x))
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -35,7 +35,6 @@ typedef pair<ll, ll> II;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef vector<vi> vvi;
-typedef vector<vl> vvl;
 typedef vector<ii> vii;
 typedef vector<vii> vvii;
 
@@ -45,6 +44,26 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int n;
+	cin>>n;
+	vl u(n+1), v(n+1);
+	for (int i=1;i<=n;i++){
+		cin>>v[i];
+		u[i]=v[i];
+	}
+	u[0]=v[0]=0;
+	Sort(u);
+	for (int i=1;i<=n;i++){
+		v[i]+=v[i-1];
+		u[i]+=u[i-1];
+	}
+	int m, t, l, r;
+	cin>>m;
+	while(m--){
+		cin>>t>>l>>r;
+		if (t==1)
+			cout<<v[r]-v[l-1]<<nl;
+		else
+			cout<<u[r]-u[l-1]<<nl;
+	}
 }

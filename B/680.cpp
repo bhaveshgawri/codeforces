@@ -46,5 +46,31 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n, a;
+	cin>>n>>a;
+	vi v(n+1);
+	for (int i=1;i<=n;i++){
+		cin>>v[i];
+	}
+	int ans = (v[a]==1)?1:0, p1=a, p2=a;
+	while(1){
+		if (p1==1 && p2<n){
+			while(p2<n+1){
+				p2++;
+				if (v[p2]==1)ans++;
+			}
+			break;
+		}
+		if (p1>0 && p2==n){
+			while(p1>=0){
+				p1--;
+				if (v[p1]==1)ans++;
+			}
+			break;
+		}
+		p1--, p2++;
+		if (v[p1]==1 && v[p2]==1)ans+=2;
+		if (p1==0 && p2==n-1)break;
+	}
+	cout<<ans<<nl;
 }

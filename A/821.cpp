@@ -9,10 +9,10 @@
 #define ppf        pop_front
 #define sz(x)      x.size()
 #define all(x)     x.begin(), x.end()
+#define Sort(x)    sort(all(x))
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +45,38 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int n, check=0, count=0;
+	cin>>n;
+	int a[n][n];
+	for (int i=0;i<n;i++){
+		for (int j=0;j<n;j++){
+			cin>>a[i][j];
+			if (a[i][j]!=1)
+				check++;
+		}
+	}
+	for (int i=0;i<n;i++){
+		for (int j=0;j<n;j++){
+			if (a[i][j]!=1){
+				int flag=0;
+				for (int k=0;k<n;k++){
+					for (int p=0;p<n;p++){
+						if (k!=j && p!=i && a[i][k]+a[p][j]==a[i][j]){
+							count++;
+							flag=1;
+							break;
+						}
+					}
+					if (flag==1)
+						break;
+				}
+			}
+		}
+	}
+	if (check==count)
+		cout<<"Yes"<<nl;
+	else
+		cout<<"No"<<nl;
+
 }
+

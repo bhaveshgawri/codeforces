@@ -46,5 +46,68 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	string s;
+	cin>>s;
+	map<char, int> mp;
+	for (char i: s){
+		mp[i]++;
+	}
+	int count=0;
+	for (ii i: mp)
+		if (i.ss!=0)
+			count++;
+	if (count==3){
+		cout<<"BGR"<<nl;
+	}
+	else if (count==2){
+		if (mp['B']==0){
+			if (mp['G']>=2 && mp['R']>=2)
+				cout<<"BGR"<<nl;
+			else if (mp['G']==1 && mp['R']==1)
+				cout<<"B"<<nl;
+			else{
+				if (mp['G']==1){
+					cout<<"BG"<<nl;
+				}
+				else{
+					cout<<"BR"<<nl;
+				}
+			}
+		}
+		else if (mp['G']==0){
+			if (mp['B']>=2 && mp['R']>=2)
+				cout<<"BGR"<<nl;
+			else if (mp['B']==1 && mp['R']==1)
+				cout<<"G"<<nl;
+			else{
+				if (mp['B']==1){
+					cout<<"BG"<<nl;
+				}
+				else{
+					cout<<"GR"<<nl;
+				}
+			}
+		}
+		if (mp['R']==0){
+			if (mp['G']>=2 && mp['B']>=2)
+				cout<<"BGR"<<nl;
+			else if (mp['G']==1 && mp['B']==1)
+				cout<<"R"<<nl;
+			else{
+				if (mp['G']==1){
+					cout<<"GR"<<nl;
+				}
+				else{
+					cout<<"BR"<<nl;
+				}
+			}
+		}
+	}
+	else{
+		if (mp['R']!=0)cout<<"R"<<nl;
+		else if (mp['G']!=0)cout<<"G"<<nl;
+		else if (mp['B']!=0)cout<<"B"<<nl;
+	}
 }

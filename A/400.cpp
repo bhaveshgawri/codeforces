@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +44,30 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int t;
+	cin>>t;
+	while(t--){
+		vector<string> ans;
+		int count=0;
+		string s;
+		cin>>s;
+		for (int i=1;i<=12;i++){
+			if (i==1||i==2||i==3||i==4||i==6||i==12){
+				map<int, int> mp;
+				int cols=12/i;
+				int rows=i;
+				for (int j=0;j<12;j++){
+					s[j]=='X'?mp[j%cols]++:mp[j%cols]=0;
+				}
+				for (auto i: mp)
+					if (i.ss==rows){
+						ans.pb(to_string(rows)+"x"+to_string(cols));
+						break;
+					}
+			}
+		}
+		cout<<ans.size()<<" ";
+		for (string answer: ans) cout<<answer<<" ";
+		cout<<nl;
+	}
 }

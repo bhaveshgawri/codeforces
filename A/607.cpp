@@ -46,5 +46,29 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	int hi=-1, p, q;
+	vii a(1000004, {0,0}); 
+	vi ans(1000004, 0);
+	for (int i=1;i<=n;i++){
+		cin>>p>>q;
+		a[p].ff=1;
+		a[p].ss=q;
+		hi=max(p, hi);
+	}
+	for (int i=0;i<=hi;i++){
+		if (!a[i].ff && i!=0){
+			ans[i]=ans[i-1];
+		}
+		else if (!a[i].ff && i==0){
+		    ans[i]=0;
+		}
+		else{
+			int x = i-a[i].ss-1>=0?i-a[i].ss-1:1000003;
+			//1000003: just wanted to select a pos where ans[pos]=0	
+			ans[i]=1+ans[x];
+		}
+	}
+	cout<<n-mxe(ans)<<nl;
 }

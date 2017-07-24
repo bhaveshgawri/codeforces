@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +44,36 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int sl, tl;
+	cin>>sl>>tl;
+	string s, t;
+	cin>>s>>t;
+	vector<string> v;
+	vvi freq(1004);
+	for(int i=0;i<tl-sl+1;i++){
+		string m="";
+		for (int j=0;j<sl;j++){
+			m+=t[i+j];
+		}
+		v.pb(m);
+	}
+	for (int i=0;i<v.size();i++){
+		for (int j=0;j<sl;j++){
+			if (s[j]!=v[i][j]){
+				freq[i].pb(j+1);
+			}
+		}
+	}
+	int min_sz=inf;
+	int idx;
+	for (int i=0;i<v.size();i++){
+		if (freq[i].size()<min_sz){
+			min_sz=freq[i].size();
+			idx=i;
+		}
+	}
+	vi ans=freq[idx];
+	cout<<ans.size()<<nl;
+	for (int i: ans)cout<<i<<" ";
+	cout<<nl;
 }

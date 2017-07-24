@@ -46,5 +46,16 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n, x;
+	cin>>n>>x;
+	vi v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	sort(all(v));
+	ll ans = 0;
+	for (int i: v){
+		ans += (ll)i*max(x--, 1);
+	}
+	cout<<ans<<nl;
 }

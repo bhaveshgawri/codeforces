@@ -46,5 +46,26 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n, m, b, mod;
+	cin>>n>>m>>b>>mod;
+	vi a(n+1);
+	for (int i=1;i<=n;i++){
+		cin>>a[i];
+	}
+	int ways[504][504]={0};
+	ways[0][0]=1;
+	for (int i=1;i<=n;i++){
+		for (int j=0;j<m;j++){
+			for (int k=0;k+a[i]<=b;k++){
+				ways[j+1][k+a[i]] = ways[j+1][k+a[i]]%mod + ways[j][k]%mod;
+				ways[j+1][k+a[i]]%=mod;
+			}
+		}
+	}
+	int ans=0;
+	for (int i=0;i<=b;i++){
+		ans=ans%mod+ways[m][i]%mod;
+		ans%=mod;
+	}
+	cout<<ans<<nl;
 }

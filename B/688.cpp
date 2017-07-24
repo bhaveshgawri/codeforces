@@ -46,5 +46,9 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	string s, t;
+	cin>>s;
+	t=s;
+	reverse(all(t));
+	cout<<s<<t<<nl;	
 }

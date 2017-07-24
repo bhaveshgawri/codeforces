@@ -9,10 +9,10 @@
 #define ppf        pop_front
 #define sz(x)      x.size()
 #define all(x)     x.begin(), x.end()
+#define Sort(x)    sort(all(x))
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -44,7 +44,30 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 int main(){
-	nfs;
-	no_step;
-	
+	int n;
+	cin>>n;
+	stack <int> st;
+	string s;
+	int k=1, ans=0;
+	for (int i=1;i<=2*n;i++){
+		cin>>s;
+		if (s[0]=='a'){
+			int p;
+			cin>>p;
+			st.push(p);
+		}
+		else{
+			if (!st.empty())
+				if (k==st.top()){
+					st.pop();
+				}
+				else{
+					ans++;
+					while(!st.empty())
+						st.pop();
+				}
+			k++;
+		}
+	}
+	cout<<ans<<nl;
 }

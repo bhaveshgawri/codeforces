@@ -46,5 +46,11 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	vl v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	cout<<mxe(v)<<nl;
 }

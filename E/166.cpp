@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -42,9 +41,18 @@ typedef vector<vii> vvii;
 const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
+	
+ll ans[10000004];
 
 int main(){
 	nfs;
-	no_step;
-	
+	int n;
+	cin>>n;
+	ll three=3;
+	ans[1]=0, ans[2]=3;
+	for (int i=3;i<=n;i++){
+		three=(three*3)%Mod;
+		ans[i] = ((three - ans[i-1]) + Mod) % Mod;
+	}
+	cout<<ans[n]<<nl;
 }

@@ -46,5 +46,16 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	string s;
+	cin>>s;
+	deque<char> d;
+	if (s.length()%2==0)
+		for (int i=0;i<n;i++)
+			(i%2==0)?d.pf(s[i]):d.pb(s[i]);
+	else
+		for (int i=0;i<n;i++)
+			(i%2==0)?d.pb(s[i]):d.pf(s[i]);
+	for (char i: d)cout<<i;cout<<nl;
 }

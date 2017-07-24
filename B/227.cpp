@@ -46,5 +46,21 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	vl v(n+1);
+	vl l(Max1), r(Max1);
+	for (int i=1;i<=n;i++){
+		cin>>v[i];
+		l[v[i]]=i;
+		r[v[i]]=n-i+1;
+	}
+	ll q, t, lans=0, rans=0;
+	cin>>q;
+	while(q--){
+		cin>>t;
+		lans+=l[t];
+		rans+=r[t];
+	}
+	cout<<lans<<" "<<rans<<nl;
 }

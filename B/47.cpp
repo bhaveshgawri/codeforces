@@ -46,5 +46,30 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	string s1, s2, s3;
+	cin>>s1>>s2>>s3;
+	set<char> v;
+	v.insert('A'); v.insert('B'); v.insert('C'); 
+	if (s1[1]=='<')
+		s1[1]='>', swap(s1[0], s1[2]);
+	if (s2[1]=='<')
+		s2[1]='>', swap(s2[0], s2[2]);
+	if (s3[1]=='<')
+		s3[1]='>', swap(s3[0], s3[2]);
+	char one;
+	int flag=0;
+	if (s1[0]==s2[0] || s1[0]==s3[0] || s2[0]==s3[0]){
+		flag=1;
+		if (s1[0]==s2[0] || s1[0]==s3[0])one = s1[0];
+		else one = s3[0];
+		v.erase(one);
+	}
+	char three;
+	if (s1[2]==s2[2] || s1[2]==s3[2] || s2[2]==s3[2]){
+		if (s1[2]==s2[2] || s1[2]==s3[2])three = s1[2];
+		else three = s3[2];
+		v.erase(three);
+	}
+	char two = *v.begin();
+	flag?cout<<three<<two<<one<<nl:cout<<"Impossible"<<nl;
 }

@@ -46,5 +46,55 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
+	int n, m, k, t, p, q;
+	cin>>n>>m>>k>>t;
+	vvi holes(Max1);
+	vector<char> starts_with(Max1);
+	starts_with[1]='c';
+	for (int i=0;i<k;i++){
+		cin>>p>>q;
+		holes[p].pb(q);
+	}
 	
+	for (int i=2, hole_no=0;i<=n;i++){
+		hole_no+=holes[i-1].size();
+		int x = ((i-1)*m - hole_no)%3;
+		if (x==0)starts_with[i] = 'c';
+		else if (x==1)starts_with[i] = 'k';
+		else if (x==2)starts_with[i] = 'g';
+	}
+	//for (int i=1;i<=n;i++)cout<<starts_with[i]<<nl;
+	while(t--){
+		cin>>p>>q;
+		int hole_count=0, flag=0;
+		for (int i: holes[p]){
+			if (i<q){
+				hole_count++;
+			}
+			else if (i==q){
+				flag=1;
+				break;
+			}
+		}
+		if (flag==1){
+			cout<<"Waste"<<nl;
+		}
+		else{
+			q-=hole_count;
+			q%=3;
+			if (starts_with[p]=='c'){
+				if (q==0)cout<<"Grapes"<<nl;
+				else if (q==1)cout<<"Carrots"<<nl;
+				else if (q==2)cout<<"Kiwis"<<nl;
+			}else if (starts_with[p]=='k'){
+				if (q==0)cout<<"Carrots"<<nl;
+				else if (q==1)cout<<"Kiwis"<<nl;
+				else if (q==2)cout<<"Grapes"<<nl;
+			}else{
+				if (q==0)cout<<"Kiwis"<<nl;
+				else if (q==1)cout<<"Grapes"<<nl;
+				else if (q==2)cout<<"Carrots"<<nl;
+			}
+		}
+	}
 }

@@ -46,5 +46,28 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	vi v(n+2);
+	v[0]=-1;
+	v[n+1]=inf;
+	for (int i=1;i<=n;i++){
+		cin>>v[i];
+	}
+	int i=1;
+	while(i<=n-1 && v[i+1]>v[i])i++;
+	int start = i;
+	while(i<=n-1 && v[i+1]<v[i])i++;
+	int end = i;
+	int flag1=0, flag2=0,flag3=1;
+	if (v[end]>v[start-1])flag1=1;
+	if (v[end+1]>v[start])flag2=1;
+	for (int i=end;i<n;i++){
+		if (v[i+1]<v[i]){
+			flag3=0;
+			break;
+		}
+	}
+	if (flag1&&flag2&&flag3)cout<<"yes"<<nl<<start<<" "<<end<<nl;
+	else cout<<"no"<<nl;
 }

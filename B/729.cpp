@@ -11,8 +11,7 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -45,6 +44,45 @@ const int Mod = 1e9 + 7;
 
 int main(){
 	nfs;
-	no_step;
-	
+	int n, m;
+	cin>>n>>m;
+	int p[n][m];
+	vii ones;
+	for (int i=0;i<n;i++){
+		for (int j=0;j<m;j++){
+			cin>>p[i][j];
+			if (p[i][j]==1)
+				ones.pb({i, j});
+		}
+	}
+	int x, y, count=0;
+	for (auto one: ones){
+		x = one.ff, y = one.ss;
+		x--;
+		while(x>=0){
+			if (p[x][y]==0)count++;
+			if (p[x][y]==1)break;
+			x--;
+		}
+		x=one.ff, y--;
+		while(y>=0){
+			if (p[x][y]==0)count++;
+			if (p[x][y]==1)break;
+			y--;
+		}
+		x++, y = one.ss;
+		while(x<n){
+			if (p[x][y]==0)count++;
+			if (p[x][y]==1)break;
+			x++;
+		}
+		x = one.ff, y++;
+		while(y<m){
+			if (p[x][y]==0)count++;
+			if (p[x][y]==1)break;
+			y++;
+		}
+	}
+	cout<<count<<nl;
+
 }

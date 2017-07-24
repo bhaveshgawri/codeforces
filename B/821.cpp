@@ -9,10 +9,10 @@
 #define ppf        pop_front
 #define sz(x)      x.size()
 #define all(x)     x.begin(), x.end()
+#define Sort(x)    sort(all(x))
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false)
-#define no_step    cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 #define Max(a, b, c)   max(a, max(b, c))
 #define Min(a, b, c)   min(a, min(b, c))
@@ -43,8 +43,18 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+ll bananas(ll x, ll y){
+	return (x*(x+1)*(y+1)+y*(y+1)*(x+1))/2;
+}
+
 int main(){
 	nfs;
-	no_step;
-	
+	ll m, b;
+	ll ans = -INF;
+	cin>>m>>b;
+	for (ll y=0;y<=b;y++){
+		ll x = (b-y)*m;
+		ans = max(ans, bananas(x, y));
+	}
+	cout<<ans<<nl;
 }

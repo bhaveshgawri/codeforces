@@ -46,5 +46,15 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	n-=3;
+	cout<<"ROG";
+	int m=n/4;
+	while(m--)cout<<"YBIV";
+	m=n%4;
+	if (m==1)cout<<"Y";
+	else if (m==2)cout<<"YB";
+	else if (m==3)cout<<"YBI";
+	cout<<nl;
 }

@@ -46,5 +46,24 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
-}
+	int n, m, p, q;
+	cin>>n>>m;
+	vii v(m);
+	for (int i=0;i<m;i++){
+		cin>>p>>q;
+		v.pb({q, p});	
+	}
+	int ans=0;
+	sort(v.rbegin(), v.rend());
+	for (int i=0;i<m;i++){
+		if (v[i].ss<=n){
+			n-=v[i].ss;
+			ans += v[i].ff*v[i].ss;
+		}
+		else{
+			ans += n*v[i].ff;
+			break;
+		}
+	}
+	cout<<ans<<nl;
+}	

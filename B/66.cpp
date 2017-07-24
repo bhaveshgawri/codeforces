@@ -46,5 +46,23 @@ const int Mod = 1e9 + 7;
 int main(){
 	nfs;
 	no_step;
-	
+	int n;
+	cin>>n;
+	vi v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	int count, maxx=-1;
+	for (int i=0;i<n;i++){
+		int j=i;
+		count=1;
+		while(j<n-1 && v[j]>=v[j+1])
+			count++, j++;
+		j=i;
+		while(j>0 && v[j]>=v[j-1])
+			count++, j--;
+		if (count>maxx)
+			maxx=count;
+	}
+	cout<<maxx<<nl;
 }
