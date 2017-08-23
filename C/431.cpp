@@ -45,8 +45,27 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+vvl cache(104, vl(104, -1ll));
+
+ll ways(ll n, ll k){
+	if (n==0) return 1ll;
+	if (cache[n][k]!=-1)return cache[n][k];
+	ll sum = 0ll;
+	for (ll i=1;i<=k;i++){
+		if (n-i>=0){
+			sum += ways(n-i, k);
+			sum%=Mod;
+		}
+	}
+	return cache[n][k] = sum%Mod;
+}
+
 void solve(){
-	
+	ll n, k, d;
+	cin>>n>>k>>d;
+	ll x1 = ways(n, k);
+	ll x2 = ways(n, d-1);
+	cout<<(x1-x2+Mod)%Mod<<nl;
 }
 
 int main(){
@@ -55,5 +74,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

@@ -46,7 +46,22 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n;
+	cin>>n;
+	vi v(n);
+	int count=0;
+	ll sum=0;
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+		sum+=v[i];
+		if (v[i]%2==1)count++;
+	}
+	if (sum%2==1)cout<<"First"<<nl;
+	else{
+		if (count==0)cout<<"Second";
+		else cout<<"First"<<nl;
+	}
+
 }
 
 int main(){

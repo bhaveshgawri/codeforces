@@ -46,7 +46,21 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
+	string s;
+	cin>>s;
+	map<int, char> mp;
+	map<char, int> count;
+	for (int i=0;i<s.length();i++)
+		if (s[i]!='!')
+			mp[i%4]=s[i];
 	
+	for (int i=0;i<s.length();i++)
+		if (s[i]=='!') count[mp[i%4]]++;
+
+	cout<<count['R']<<" "
+		<<count['B']<<" "
+		<<count['Y']<<" "
+		<<count['G']<<nl;
 }
 
 int main(){
@@ -55,5 +69,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

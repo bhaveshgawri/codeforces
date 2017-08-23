@@ -46,7 +46,41 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n;
+	cin>>n;
+	vi v(n+1);
+	vi start(5004, -1), end(5004, -1);
+	for (int i=1;i<=n;i++){
+		cin>>v[i];
+		if (start[v[i]]==-1){
+			start[v[i]]=i;
+		}
+	}
+	for (int i=n;i>0;i--){
+		if (end[v[i]]==-1){
+			end[v[i]]=i;
+		}
+	}
+	vi ans(5004, 0);
+	for (int i=1;i<=n;i++){
+		int lo = i;
+		int xor_=0;
+		ans[i] = ans[i-1];
+		for (int j=i;j>0;j--){
+			if (end[v[j]]>i){
+				break;
+			}
+			else{
+				if (start[v[j]]<lo)
+					lo = start[v[j]];
+				if (j==end[v[j]])
+					xor_ ^= v[j];
+				if (j==lo)
+					ans[i] = max(ans[i], ans[j-1]+xor_);
+			}
+		}
+	}
+	cout<<ans[n]<<nl;
 }
 
 int main(){

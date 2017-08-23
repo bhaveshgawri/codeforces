@@ -11,23 +11,24 @@
 #define all(x)     x.begin(), x.end()
 #define init(x, k) fill(all(x), k)
 #define dot(x)     fixed<<setprecision(x) 
-#define nfs        ios_base::sync_with_stdio(false);cin.tie(NULL)
+#define nfs        ios_base::sync_with_stdio(false)
+#define no_step    cin.tie(NULL)
 
-#define _max(a, b, c)   max(a, max(b, c))
-#define _min(a, b, c)   min(a, min(b, c))
-#define mxe(a)          *max_element(all(a))
-#define mne(a)          *min_element(all(a))
+#define Max(a, b, c)   max(a, max(b, c))
+#define Min(a, b, c)   min(a, min(b, c))
+#define mxe(a)        *max_element(all(a))
+#define mne(a)        *min_element(all(a))
 
-#define lb(x, k) lower_bound(all(x), k)-x.begin()
-#define ub(x, k) upper_bound(all(x), k)-x.begin()
+#define lb(x, k)   lower_bound(all(x), k)-x.begin()
+//first element not less than (i.e. greater or equal to) k
+#define ub(x, k)   upper_bound(all(x), k)-x.begin()
+//first element greater than k
 
 #define inf      INT_MAX
-#define minf     INT_MIN
 #define INF      LLONG_MAX
-#define MINF     LLONG_MIN
 
-#define f    first
-#define s    second
+#define ff    first
+#define ss    second
 
 using namespace std;
 
@@ -36,41 +37,64 @@ typedef pair<ll, ll> II;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef vector<vi> vvi;
+typedef vector<vl> vvl;
 typedef vector<ii> vii;
 typedef vector<vii> vvii;
 
-const int MAX = 1e5 + 4;
-const int MOD = 1e9 + 7;
+const int Max1 = 1e5 + 4;
+const int Max2 = 2e5 + 4;
+const int Mod = 1e9 + 7;
+
+void solve(){
+	ll n, sum=0;
+	cin>>n;
+	vl v(n+1);
+	for (ll i=1;i<=n;i++){
+		cin>>v[i];
+		sum += v[i];
+	}
+	if (sum%3!=0){
+		cout<<0<<nl;
+	}
+	else{
+		ll part = sum/3;
+		vl c(n+1);
+		for (ll i=1;i<=n;i++){
+			c[i] = c[i-1] + v[i];
+		}
+		if (part == 0){
+			ll count=0;
+			for (ll i=1;i<=n;i++){
+				if (c[i]==0)count++;
+			}
+			count-=2ll;
+			cout<<(count*(count+1))/2;
+		}
+		else{
+			vl onex, twox;
+			for (ll i=1;i<=n;i++){
+				if (c[i]==part){
+					onex.pb(i);
+				}
+				if (c[i]==2ll*part){
+					twox.pb(i);
+				}
+			}
+			ll ans = 0;
+			for (ll i: onex){
+				ll u = ub(twox, i);
+				ll val = twox.size()-u;
+				ans+=val;
+			}
+			cout<<ans<<nl;
+		}
+	}
+}
 
 int main(){
 	nfs;
-	int n;
-	ll sum=0;
-	cin>>n;
-	vl v(n);
-	for (int i=0;i<n;i++){
-		cin>>v[i];
-		sum+=v[i];
-	}
-	//for (int i=1;i<n;i++){
-	//	v[i]=v[i]+v[i-1];
-	//}
-	if (sum%3!=0 || n<3){
-		cout<<0<<nl;
-		return 0;
-	}
-	int s=0, e=n-1, suml=v[s], sumr=v[e];
-	while(1){
-		if (sumr==sumr==sum/3){
-			count++;
-		}
-		else if (sumr>suml || sumr==sum/3){
-			s++;
-			suml+=v[s];
-		}
-		else if (sumr>suml || suml==sum/3){
-			e--;
-			sumr+=v[e];
-		}
-	}
+	no_step;
+	//freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
+	solve();
 }

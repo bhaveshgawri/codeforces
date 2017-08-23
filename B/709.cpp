@@ -46,7 +46,23 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n, m;
+	cin>>n>>m;
+	vi v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	sort(all(v));
+	if (n==1)cout<<0<<nl;
+	else{
+		if (m>=v[n-1])cout<<m-v[1]<<nl;
+		else if (m<=v[0])cout<<v[n-2]-m<<nl;
+		else
+			cout<<min(
+					min(abs((m-v[1])) + v[n-1]-v[1], v[n-1]-m + v[n-1]-v[1]),
+					min((m-v[0]) + v[n-2]-v[0], abs(v[n-2]-m) + v[n-2]-v[0])
+				)<<nl;
+	}
 }
 
 int main(){
@@ -55,5 +71,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

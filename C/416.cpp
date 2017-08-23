@@ -45,8 +45,45 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+bool comp(const pair<ii, int> &a,const pair<ii, int> &b){
+	//desc
+	if (a.ff.ss!=b.ff.ss)
+		return a.ff.ss>b.ff.ss;
+	else return a.ff.ff<b.ff.ff;
+}
+
 void solve(){
-	
+	int n;
+	cin>>n;
+	vector<pair<ii, int>> v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i].ff.ff>>v[i].ff.ss;
+		v[i].ss = i+1;
+	}
+	int r, p;
+	cin>>r;
+	vector<set<int>> vs(1004);
+	multiset<int> ms;
+	for (int i=0;i<r;i++){
+		cin>>p;
+		vs[p].insert(i+1);
+		ms.insert(p);
+	}
+	sort(all(v), comp);
+	vii ans;
+	int sum = 0, counter = 0;
+	for (auto i: v){
+		auto it = ms.lower_bound(i.ff.ff);
+		if (it!=ms.end()){
+			counter++;
+			sum+=i.ff.ss;
+			ans.pb({i.ss, *vs[*it].begin()});
+			vs[*it].erase(vs[*it].begin());
+			ms.erase(it);
+		}
+	}
+	cout<<counter<<" "<<sum<<nl;
+	for (ii i: ans)cout<<i.ff<<" "<<i.ss<<nl;
 }
 
 int main(){

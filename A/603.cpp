@@ -46,7 +46,31 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n;
+	cin>>n;
+	vi v(n);
+	vi ne;
+	string s;
+	cin>>s;
+	for (int i=0;i<n;i++){
+		v[i]=s[i]-'0';
+	}
+	int ans = 0;
+	for (int i=0;i<n;i++){
+		ne.pb(v[i]);
+		int cmp = v[i];
+		int count=1;
+		while(i+1<n && v[i+1]==cmp){
+			i++;
+			count++;
+		}
+		ans = max(ans, count);
+	}
+	if (ans<2)cout<<ne.size()<<nl;
+	else if (ans==2){
+		cout<<min(int(ne.size())+2, n);
+	}
+	else cout<<ne.size()+2<<nl;
 }
 
 int main(){

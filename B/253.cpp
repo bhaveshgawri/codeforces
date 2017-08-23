@@ -46,14 +46,27 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n;
+	cin>>n;
+	vi v(n);
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	sort(all(v));
+	int ans = inf;
+	for (int i=0;i<n;i++){
+		int start = i;
+		int end = ub(v, 2*v[start]);
+		int removed = (n - end) + (start);
+		ans = min(ans, removed); 
+	}
+	cout<<ans<<nl;
 }
 
 int main(){
 	nfs;
 	no_step;
-	//freopen("input.txt", "r", stdin);
-	//freopen("output.txt", "w", stdout);
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

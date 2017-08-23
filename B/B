@@ -45,8 +45,32 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+bool comp(const pair<int,int> &a,const pair<int,int> &b){
+	if (a.ss==b.ss)
+		return a.ff<<b.ff;
+	else return a.ss<b.ss;
+}
+
 void solve(){
-	
+	int n, p, q;
+	cin>>n;
+	vii v;
+	for (int i=0;i<n;i++){
+		cin>>p>>q;
+		v.pb({p, q});
+	}
+	sort(all(v), comp);
+	for (ii i: v)cout<<i.ff<<" "<<i.ss<<nl;
+	int ans = 1;
+	int curr = 0, next;
+	while(1){
+		int l = lower_bound(all(v), ii(v[curr].ss+1, 0))-v.begin();
+		cout<<v[curr].ff<<" "<<v[curr].ss<<nl;
+		if (v[curr].ss+1>v[n-1].ff)break;
+		ans++;
+		curr = l;
+	}
+	cout<<ans<<nl;
 }
 
 int main(){

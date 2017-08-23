@@ -45,8 +45,25 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+double prob[2004][2004];
+
 void solve(){
-	
+	int n, t;
+	double p;
+	cin>>n>>p>>t;
+	prob[0][0]=1.0;
+	double ans = 0.0;
+	for (int i=0;i<t;i++){
+		for (int j=0;j<=n;j++){
+			if (j==n)prob[i+1][j]+=prob[i][j];
+			else{
+				prob[i+1][j+1]+=prob[i][j]*p;
+				prob[i+1][j]+=prob[i][j]*(1.0-p);
+			}
+			if (i==t-1)ans+=j*prob[i+1][j];
+		}
+	}
+	cout<<dot(6)<<ans<<nl;
 }
 
 int main(){

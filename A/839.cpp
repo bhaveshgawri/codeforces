@@ -46,7 +46,28 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n, k;
+	cin>>n>>k;
+	vi v(n+1);
+	int sum = 0;
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+	}
+	int count = 0;
+	int i=0;
+	for (int i=0;i<n;i++){
+		k = k - Min(k, v[i], 8);
+		count++;
+		if (8<v[i]){
+			v[i+1] += (v[i]-8);
+		}
+		if (k<=0){
+			cout<<count<<nl;
+			return;
+		}
+
+	}
+	cout<<-1<<nl;
 }
 
 int main(){

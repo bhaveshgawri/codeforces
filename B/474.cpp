@@ -46,7 +46,20 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n;
+	cin>>n;
+	vi v(n);
+	for (int i=0;i<n;i++)
+		cin>>v[i];
+	for (int i=0;i<n-1;i++)
+		v[i+1] += v[i];
+	int p, q;
+	cin>>q;
+	while(q--){
+		cin>>p;
+		int l = lb(v, p);
+		cout<<l+1<<nl;
+	}
 }
 
 int main(){
@@ -55,5 +68,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

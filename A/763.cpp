@@ -45,15 +45,44 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+
 void solve(){
-	
+	int n, p, q;
+	cin>>n;
+	vi color(n+1);
+	vii edges;
+	map<int, int> count;
+	for (int i=0;i<n-1;i++){
+		cin>>p>>q;
+		edges.pb({p, q});
+	}
+	for (int i=1;i<=n;i++){
+		cin>>color[i];
+	}
+	int check = 0;
+	for (ii i: edges){
+		if (color[i.ff]!=color[i.ss]){
+			check++;
+			count[i.ff]++;
+			count[i.ss]++;
+		}
+	}
+	int flag = 0;
+	for (ii i: count){
+		if (i.ss==check){
+			cout<<"YES"<<nl<<i.ff<<nl;
+			flag = 1;
+			break;
+		}
+	}
+	if (count.size()==0)cout<<"YES"<<nl<<edges[0].ff<<nl;
+	else if (flag == 0)cout<<"NO"<<nl;
 }
 
 int main(){
 	nfs;
 	no_step;
-	//freopen("input.txt", "r", stdin);
-	//freopen("output.txt", "w", stdout);
+	// freopen("input.txt", "r", stdin);
+	// freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

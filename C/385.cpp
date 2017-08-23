@@ -44,9 +44,59 @@ typedef vector<vii> vvii;
 const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
+const int hi = 1e7+4;
+
+vi lp(hi);
+vi prime;
+vi ans(hi, 0);
+vi visited(hi, 0);
+
+void primes(){
+	for (int i=2;i<=hi;i++){
+		if (lp[i]==0){
+			lp[i] = i;
+			prime.pb(i);
+		}
+		for (int j=0;j<(int)prime.size() && prime[j]<=lp[i] && i*prime[j]<=hi;j++){
+			lp[i*prime[j]] = prime[j];
+		}
+	}
+}
+
+void factorize(int n){
+	vi pr_fac;
+	while(n!=1){
+		if (visited[lp[n]]==0){
+			ans[lp[n]]++;
+			visited[lp[n]]=1;
+			pr_fac.pb(lp[n]);
+		}
+		n/=lp[n];
+	}
+	for (int i: pr_fac){
+		visited[i] = 0;
+	}
+}
 
 void solve(){
-	
+	primes();
+	int n, p;
+	cin>>n;
+	for (int i=0;i<n;i++){
+		cin>>p;
+		factorize(p);
+	}
+	for (int i=1;i<hi;i++){
+		ans[i]+=ans[i-1];
+	}
+	int m, l, r;
+	cin>>m;
+	while(m--){
+		cin>>l>>r;
+		if (r>hi)r=hi-1;
+		if (l>hi)l=hi-1;
+		cout<<ans[r]-ans[l-1]<<nl;
+	}
 }
 
 int main(){

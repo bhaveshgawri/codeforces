@@ -45,8 +45,86 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+ll level(ll n){
+	ll level = 0;
+	if (n && !(n&(n-1))){
+		ll pp = n;
+		while(pp){
+			pp/=2;
+			level++;
+		}
+		return level;
+	}
+	else{
+		n--;
+		n|=n>>1;
+		n|=n>>2;
+		n|=n>>4;
+		n|=n>>8;
+		n|=n>>16;
+		n|=n>>32;
+		ll pp = ++n;
+		while(pp){
+			pp/=2;
+			level++;
+		}
+		return --level;
+	}
+}
+
+set<II> edge_list(ll u, ll v){
+	set<II> edges;
+	ll levelu = level(u);
+	ll levelv = level(v);
+	ll temp, other;
+	if (levelu > levelv){
+		temp = u;
+		other = v;
+	}
+	else{
+		temp = v;
+		other = u;
+	}
+	while(temp>1){
+		edges.insert({temp/2, temp});
+		temp/=2;
+	}
+	while(other>1){
+		II edge = {other/2, other};
+		if (!(edges.find(edge)!=edges.end())){
+			edges.insert(edge);
+		}
+		else{
+			edges.erase(edge);
+		}
+		other/=2;
+	}
+	return edges;
+}
+
 void solve(){
-	
+	ll q;
+	cin>>q;
+	map<II, ll> cost;
+	while(q--){
+		ll p, u, v;
+		cin>>p;
+		if (p==1){
+			ll w;
+			cin>>u>>v>>w;
+			set<II> edges = edge_list(u, v);
+			for (II edge: edges)
+				cost[edge]+=w;
+		}
+		else if (p==2){
+			cin>>u>>v;
+			ll ans = 0;
+			set<II> edges = edge_list(u, v);
+			for (II edge: edges)
+				ans+=cost[edge];
+			cout<<ans<<nl;
+		}
+	}
 }
 
 int main(){
@@ -55,5 +133,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

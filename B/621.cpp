@@ -46,7 +46,43 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n, p, q;
+	cin>>n;
+	vvi v(1004, vi(1004, 0));
+	for (int i=0;i<n;i++){
+		cin>>p>>q;
+		v[p][q] = 1;
+	}
+	ll ans = 0ll;
+	for (int i=0;i<1004;i++){
+		ll count = 0;
+		for (int j=1;i+j<=1003;j++){
+			if (v[i+j][j] == 1)count++;
+		}
+		ans+=(count*(count-1))/2;
+	}
+	for (int i=1;i<1004;i++){
+		ll count = 0;
+		for (int j=1;i+j<=1003;j++){
+			if (v[j][i+j] == 1)count++;
+		}
+		ans+=(count*(count-1))/2;
+	}
+	for (int i=0;i<1000;i++){
+		ll count = 0;
+		for (int j=1;i+j<=1000;j++){
+			if (v[1001-i-j][j] == 1)count++;
+		}
+		ans+=(count*(count-1))/2;
+	}
+	for (int i=1;i<1001;i++){
+		ll count = 0;
+		for (int j=1;i+j<=1000;j++){
+			if (v[1001-j][j+i] == 1)count++;
+		}
+		ans+=(count*(count-1))/2;
+	}
+	cout<<ans<<nl;
 }
 
 int main(){
@@ -55,5 +91,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

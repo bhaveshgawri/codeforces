@@ -46,7 +46,35 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n, x, y;
+	cin>>n>>x>>y;
+	vii dim(n);
+	int p, q;
+	for (int i=0;i<n;i++){
+		cin>>p>>q;
+		dim[i] = {p, q};
+	}
+	int area = 0;
+	for (int i=0;i<n;i++){
+		for (int j=i+1;j<n;j++){
+			int one = dim[i].ff;
+			int two = dim[i].ss;
+			int three = dim[j].ff;
+			int four = dim[j].ss;
+			if (one + three <= x && max(two, four)<=y ||
+				one + three <= y && max(two, four)<=x ||
+				one + four <= x && max(two, three)<=y ||
+				one + four <= y && max(two, three)<=x ||
+				two + three <= x && max(one, four)<=y ||
+				two + three <= y && max(one, four)<=x ||
+				two + four <= x && max(one, three)<=y ||
+				two + four <= y && max(one, three)<=x
+				){
+				area = max(area, one*two+three*four);
+			}
+		}
+	}
+	cout<<area<<nl;
 }
 
 int main(){

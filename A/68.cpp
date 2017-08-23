@@ -46,7 +46,21 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	vi v(4), count(40000, 0);
+	cin>>v[0]>>v[1]>>v[2]>>v[3];
+	int a, b;
+	cin>>a>>b;
+	sort(all(v));
+	while(1){
+		for (int i=a;i<=b;i++){
+			if ((((i%v[0])%v[1])%v[2])%v[3]==i)count[i]++;
+		}
+		bool b = next_permutation(all(v));
+		if (!b)break;
+	}
+	int ans = 0;
+	for (int i: count)if (i>=7)ans++;	
+	cout<<ans<<nl;
 }
 
 int main(){

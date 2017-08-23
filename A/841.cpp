@@ -46,7 +46,25 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int n, k;
+	cin>>n>>k;
+	string s;
+	cin>>s;
+	vi count(27);
+	int min = inf;
+	for (int i=0;i<s.length();i++){
+		if (s[i]>='A' && s[i]<='Z'){
+			s[i]+=('a'-'A');
+		}
+		count[s[i]-'a']++;
+	}
+	for (int i=0;i<26;i++){
+		if (count[i]>k){
+			cout<<"NO"<<nl;
+			return;
+		}
+	}
+	cout<<"YES"<<nl;
 }
 
 int main(){

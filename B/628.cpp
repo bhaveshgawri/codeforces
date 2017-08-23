@@ -46,7 +46,22 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	string s;
+	cin>>s;
+	int n = s.size();
+	vi v(n);
+	for (int i=0;i<n;i++){
+		v[i]=s[i]-'0';
+	}
+	ll ans = 0;
+	for (int i=0;i<n-1;i++){
+		int num = 10*v[i]+v[i+1];
+		if (num%4==0)
+			ans+=(i+1);
+	}
+	for (int i=0;i<n;i++)
+		if (v[i]%4==0)ans++;
+	cout<<ans<<nl;
 }
 
 int main(){
@@ -55,5 +70,4 @@ int main(){
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 	solve();
-	return 0;
 }

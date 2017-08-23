@@ -46,7 +46,29 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 void solve(){
-	
+	int m;
+	cin>>m;
+	vi a(m);
+	priority_queue<ii, vii, greater<ii>> pq;
+	int p;
+	for (int i=0;i<m;i++){
+		cin>>a[i];
+	}
+	sort(all(a));
+	reverse(all(a));
+	for (int i=0;i<m;i++){
+		cin>>p;
+		pq.push({p, i});
+	}
+	vii ans;
+	for (int i=0;i<m;i++){
+		auto small = pq.top();
+		pq.pop();
+		ans.pb({small.ss, a[i]});
+	}
+	sort(all(ans));
+	for (auto i: ans)cout<<i.ss<<" ";cout<<nl;
+
 }
 
 int main(){

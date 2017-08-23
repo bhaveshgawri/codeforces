@@ -45,8 +45,56 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+string s;
+vi v(26);
+vi cache(1004, -1);
+int max_len=1;
+
+int ways(int start, int n){
+	if (start == n-1 // n-1 when a,b,c,d + ways(n-1)#test2
+	 || start == n){ // n when a,b, cde + ways(n) 	#test2
+		return 1;
+	}
+	if (cache[start]!=-1)
+		return cache[start];
+
+	string t="";
+	int lo=inf;
+	int ans = 0;
+	for (int i=start;i<n;i++){
+		t+=s[i];
+		lo = min(lo, v[s[i]-'a']);
+		if (lo<t.length())
+			break;
+		max_len = max(max_len, (int)t.length());
+		ans += ways(i+1, n);
+		ans%=Mod;
+	}
+	return cache[start] = ans;
+}
+
 void solve(){
-	
+	int n;
+	cin>>n;
+	cin>>s;	
+	for (int i=0;i<26;i++){
+		cin>>v[i];
+	}
+	int ans = ways(0, n);
+	cout<<ans<<nl<<max_len<<nl;
+	int subs=0, lo=inf;
+	string t="";
+	for (int i=0;i<s.length();i++){
+		t+=s[i];
+		lo = min(lo, v[s[i]-'a']);
+		if (lo<t.length()){
+			t=t[t.length()-1];
+			lo = v[s[i]-'a'];
+			subs++;
+		}
+	}
+	if (t!="")cout<<subs+1<<nl;
+	else cout<<subs<<nl;
 }
 
 int main(){
