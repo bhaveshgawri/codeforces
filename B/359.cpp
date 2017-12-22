@@ -45,47 +45,11 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
-		}
-	}
-}
-
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
-	}
-	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
-		}
-	}
-	cout<<dot(6)<<ans<<nl;
+	int n, k;
+	cin>>n>>k;
+	for (int i=1;i<=k;i++) cout<<2*i<<" "<<2*i-1<<" ";
+	for (int i=2*k+1;i<=2*n;i++) cout<<i<<" ";
 }
 
 

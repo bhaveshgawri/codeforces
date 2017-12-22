@@ -45,49 +45,47 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
-		}
-	}
-}
-
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+	int n;
+	cin>>n;
+	vi v(n), c(n);
+	vi occured(Max2, 0), last(Max2);
+	priority_queue<int, vi, greater<int>>pq;
+	set<int> rep;
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+		c[i]=v[i];
+	}
+	sort(all(c));
+	for (int i=0;i<n-1;i++){
+		if (c[i]==c[i+1]){
+			rep.insert(c[i]);
 		}
 	}
-	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
+	for (int i=1;i<=200000;i++){
+		if (!binary_search(all(c), i)){
+			pq.push(i);
 		}
 	}
-	cout<<dot(6)<<ans<<nl;
+	for (int i=0;i<n;i++){
+		last[v[i]]=i;
+	}
+	int count=0;
+	for (int i=0;i<n;i++){
+		if (rep.find(v[i])!=rep.end()){
+			if (pq.top()<v[i] && last[v[i]]!=i || occured[v[i]]){
+				v[i]=pq.top();
+				pq.pop();
+				count++;
+			}
+			occured[v[i]]=1;
+		}
+	}
+	cout<<count<<nl;
+	for (int i=0;i<n;i++){
+		cout<<v[i]<<" ";
+	}
 }
-
 
 int main(){
 	nfs;

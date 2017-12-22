@@ -45,49 +45,56 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
-		}
-	}
-}
-
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+	int n;
+	cin>>n;
+	vi ans;
+	if (n%2==0){
+		if ((n/2)%2==0){
+			cout<<0<<nl;
+			// cout<<n/2<<" ";
+			for (int i=1;i<=n/2;i++){
+				if (i%2==1)ans.pb(i);
+			}
+			for (int i=n/2+1;i<=n;i++){
+				if (i%2==0)ans.pb(i);
+			}
+		}
+		else{
+			cout<<1<<nl;
+			for (int i=1;i<=n/2;i++){
+				if (i%2==1)ans.pb(i);
+			}
+			for (int i=n/2+2;i<=n;i++){
+				if (i%2==0)ans.pb(i);
+			}
 		}
 	}
 	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+		ans.pb(3);
+		int end = (n-3)/2;
+		if (((n-1)/2)%2==0){
+			cout<<1<<nl;
+			for (int i=4;i<4+end;i++){
+				if (i%2==0)ans.pb(i);
+			}
+			for (int i=5+end;i<=n;i++){
+				if (i%2==1)ans.pb(i);
+			}
 		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
+		else{
+			cout<<0<<nl;
+			for (int i=4;i<4+end;i++){
+				if (i%2==0)ans.pb(i);
+			}
+			for (int i=4+end;i<=n;i++){
+				if (i%2==1)ans.pb(i);
+			}
 		}
 	}
-	cout<<dot(6)<<ans<<nl;
+	cout<<ans.size()<<" ";
+	for (int i: ans)cout<<i<<" ";
 }
-
 
 int main(){
 	nfs;

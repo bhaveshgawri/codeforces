@@ -46,48 +46,50 @@ const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
 
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
+bool isQuasi(int n){
+	string s = to_string(n);
+	for (char i: s){
+		if (i!='1' && i!='0'){
+			return false;
 		}
 	}
+	return true;
+}
+
+int genQuasi(int n){
+	string s = to_string(n);
+	int quasi=0;
+	int count=0;
+	reverse(all(s));
+	for (char i: s){
+		if (i!='0'){
+			quasi += (int)pow(10, count);
+		}
+		count++;
+	}
+	return quasi;
 }
 
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+	int n;
+	cin>>n;
+	vi ans;
+	while(n){
+		if (isQuasi(n)){
+			ans.pb(n);
+			break;
+		}
+		else{
+			int quasi = genQuasi(n);
+			n -= quasi;
+			ans.pb(quasi);
 		}
 	}
-	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
-		}
+	cout<<ans.size()<<endl;
+	for (int i: ans){
+		cout<<i<<" ";
 	}
-	cout<<dot(6)<<ans<<nl;
 }
-
 
 int main(){
 	nfs;

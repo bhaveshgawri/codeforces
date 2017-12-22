@@ -45,49 +45,37 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
+map<string, vector<string>> G;
+set<string> ans;
 
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
-		}
+void create(string s, int n){
+	if (s.length()==n){
+		ans.insert(s);
+		return;
+	}
+	if (s.length()>n)return;
+	string str(1, s[0]);
+	for (string replacement: G[str]){
+		string bkp = s;
+		s.replace(0, 1, replacement);
+		create(s, n);
+		s=bkp;
 	}
 }
 
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
+	int n, q;
+	cin>>n>>q;
+	while(q--){
+		string a, b;
+		cin>>a>>b;
+		G[b].pb(a);
 	}
-	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
-		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
-		}
+	for (string s: G["a"]){
+		create(s, n);
 	}
-	cout<<dot(6)<<ans<<nl;
+	cout<<ans.size()<<nl;
 }
-
 
 int main(){
 	nfs;

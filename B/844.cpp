@@ -45,49 +45,37 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-
-
-// sol 1
-
-long double r[2004];
-
-void nCr(int t){
-	r[0] = 1;
-	for (int i=0;i<=t;i++){
-		for (int j=i;j>0;j--){
-			r[j] += r[j-1];
-		}
-	}
-}
-
 void solve(){
-	int n, t;
-	long double p;
-	cin>>n>>p>>t;
-	nCr(t);
-	long double ans = 0;
-	if (n>=t){
-		for (int i=1;i<=t;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+	int n, m;
+	cin>>n>>m;
+	int t[n+1][m+1];
+	for (int i=0;i<n;i++){
+		for (int j=0;j<m;j++){
+			cin>>t[i][j];
 		}
 	}
-	else{
-		for (int i=1;i<n;i++){
-			ans += i*r[i]*pow(p, i)*pow(1-p, t-i);
+	ll ans = 0;
+	for (int i=0;i<n;i++){
+		int count0 = 0, count1=0;
+		for (int j=0;j<m;j++){
+			if (t[i][j]==1)count1++;
+			else count0++;
 		}
-		long double combination = r[n];
-		int nr = n, dr = t;
-		combination = ((long double)nr/dr)*combination;
-		nr = t-n, dr = t-1;
-		for (int i=t;i>=n;i--){
-			ans += n*combination*pow(p, n-1)*pow(1-p, i-n)*p;
-			combination *= (((long double)nr)/dr);
-			nr--, dr--;
-		}
+		ans += ((ll)(1ll<<count1) -1 -count1);
+		ans += ((ll)(1ll<<count0) -1 -count0);
 	}
-	cout<<dot(6)<<ans<<nl;
+	for (int i=0;i<m;i++){
+		int count0 = 0, count1=0;
+		for (int j=0;j<n;j++){
+			if (t[j][i]==1)count1++;
+			else count0++;
+		}
+		ans += ((ll)(1ll<<count1) -1 -count1);
+		ans += ((ll)(1ll<<count0) -1 -count0);
+	}
+	ans += m*n;
+	cout<<ans<<nl;
 }
-
 
 int main(){
 	nfs;

@@ -44,33 +44,56 @@ typedef vector<vii> vvii;
 const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
+const int pad = 1e9;
 
-bool comp(const pair<int,int> &a,const pair<int,int> &b){
-	if (a.ss==b.ss)
-		return a.ff<<b.ff;
-	else return a.ss<b.ss;
+int k=0;
+vl visited(Max1);
+vvl ans(Max1);
+vvl G(Max1);
+set<ll> s;
+
+void dfs(ll n){
+	if (visited[n]==0){
+		visited[n]=1;
+		ans[k].pb(n);
+		for (ll i: G[n]){
+			dfs(i);
+		}
+	}
 }
 
 void solve(){
-	int n, p, q;
+	int n;
 	cin>>n;
-	vii v;
+	vl v(n), c(n);
 	for (int i=0;i<n;i++){
-		cin>>p>>q;
-		v.pb({p, q});
+		cin>>v[i];
+		c[i] = v[i];
 	}
-	sort(all(v), comp);
-	for (ii i: v)cout<<i.ff<<" "<<i.ss<<nl;
-	int ans = 1;
-	int curr = 0, next;
-	while(1){
-		int l = lower_bound(all(v), ii(v[curr].ss+1, 0))-v.begin();
-		cout<<v[curr].ff<<" "<<v[curr].ss<<nl;
-		if (v[curr].ss+1>v[n-1].ff)break;
-		ans++;
-		curr = l;
+	sort(all(c));
+	map<int, int> hash;
+	for (int i=0;i<n;i++){
+		hash[c[i]]=i+1;
 	}
-	cout<<ans<<nl;
+	for (int i=0;i<n;i++){
+		int l = lb(c, v[i]);
+		G[i+1].pb(hash[c[l]]);
+		G[hash[c[l]]].pb(i+1);
+	}
+	for (int i=1;i<=n;i++){
+		if (visited[i]==0){
+			k++;
+			dfs(i);
+		}
+	}
+	cout<<k<<nl;
+	for (ll i=1;i<=k;i++){
+		cout<<ans[i].size()<<" ";
+		for (ll j: ans[i]){
+			cout<<j<<" ";
+		}
+		cout<<nl;
+	}
 }
 
 int main(){
