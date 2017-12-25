@@ -20,7 +20,7 @@
 #define mne(a)        *min_element(all(a))
 
 #define lb(x, k)   lower_bound(all(x), k)-x.begin()
-//first element not less than (i.e. greater or equal to) k
+//first element greater or equal to k
 #define ub(x, k)   upper_bound(all(x), k)-x.begin()
 //first element greater than k
 
@@ -45,86 +45,78 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-ii process(int n){
-	int counter2=0, counter5=0;
-	int temp = n;
-	while(temp%2==0){
-		temp/=2;
-		counter2++;
+int mat[1004][1004];
+int mat2[1004][1004];
+vvi ans2(1004, vi(1004, inf));
+vvi ans5(1004, vi(1004, inf));
+char ans2c[1004][1004];
+char ans5c[1004][1004];
+ii zero_pos;
+
+ii two_five(int n){
+	int two=0;
+	int count2=0, count5=0;
+	while(n%2==0){
+		n /= 2;
+		count2++;
 	}
-	while(n%5==0){
-		n/=5;
-		counter5++;
+	while(n%5==0) {
+		n /= 5;
+		count5++;
 	}
-	return {counter2, counter5};
+	return {count2, count5};
 }
 
 void solve(){
-	ll n;
+	int n;
 	cin>>n;
-	ll mat[n+1][n+1];
-	vector<vector<II>> count(n+1, vector<II>(n+1, II(0ll, 0ll)));
-	char ans[n+1][n+1];
-	ii pt = {inf, inf};
-	for (ll i=1;i<=n;i++){
-		for (ll j=1;j<=n;j++){
+	bool zero=false;
+	for (int i=1;i<=n;i++){
+		for (int j=1;j<=n;j++){
 			cin>>mat[i][j];
+			mat2[i][j] = mat[i][j];
 			if (mat[i][j]==0){
-				pt = {i, j};
+				zero = true;
+				mat[i][j]=10;
+				zero_pos.ff = i, zero_pos.ss = j;
 			}
 		}
-		mat[0][i]=mat[i][0]=INF;
-		count[0][i].ff=count[0][i].ss=INF;
-		count[i][0].ff=count[i][0].ss=INF;
 	}
-
-	if (pt.ff!=inf){
+	ans2[1][0] = ans2[0][1] = ans5[1][0] = ans5[0][1] = 0;
+	for (int i=1; i<=n; i++){
+		for (int j=1; j<=n; j++){
+			ii count = two_five(mat[i][j]);
+			ans2[i][j] = min(ans2[i-1][j], ans2[i][j-1])+count.ff;
+			ans2[i-1][j]<ans2[i][j-1] ? ans2c[i][j] = 'D' : ans2c[i][j] = 'R';
+			ans5[i][j] = min(ans5[i-1][j], ans5[i][j-1])+count.ss;
+			ans5[i-1][j]<ans5[i][j-1] ? ans5c[i][j] = 'D' : ans5c[i][j] = 'R';
+		}
+	}
+	ans2c[1][1] = ans5c[1][1] = 'x';
+	if (!zero || (zero && min(ans2[n][n], ans5[n][n])==0)){
+		cout<<min(ans2[n][n], ans5[n][n])<<nl;
+		vector<char> v;
+		int i = n, j = n;
+		if (ans2[n][n] < ans5[n][n]){
+			while(ans2c[i][j] != 'x'){
+				if (ans2c[i][j] == 'D') i--, v.pb('D');
+				else if (ans2c[i][j] == 'R') j--, v.pb('R');
+			}
+		}
+		else{
+			while(ans5c[i][j] != 'x'){
+				if (ans5c[i][j] == 'D') i--, v.pb('D');
+				else if (ans5c[i][j] == 'R') j--, v.pb('R');
+			}	
+		}
+		reverse(all(v));
+		for (char c: v)cout<<c;
+	}
+	else if (zero && min(ans2[n][n], ans5[n][n])!=0){
 		cout<<1<<nl;
-		for (int i=1;i<pt.ff;i++) cout<<"D";
-		for (int i=1;i<pt.ss;i++) cout<<"R";
-		for (int i=pt.ff;i<n;i++) cout<<"D";
-		for (int i=pt.ss;i<n;i++) cout<<"R";
-	}
-	else{
-		ii temp = process(mat[1][1]);
-		count[1][1].ff+=temp.ff;
-		count[1][1].ss+=temp.ss;
-
-		for (ll i=1;i<=n;i++){
-			for (ll j=1;j<=n;j++){
-				if (i==1 && j==1)continue;
-				ii inc = process(mat[i][j]);
-				count[i][j].ff+=inc.ff;
-				count[i][j].ss+=inc.ss;
-				
-				ll zerou = min(count[i-1][j].ff, count[i-1][j].ss);
-				ll zerol = min(count[i][j-1].ff, count[i][j-1].ss);
-				if (zerol<zerou){
-					count[i][j].ff += count[i][j-1].ff;
-					count[i][j].ss += count[i][j-1].ss;
-					ans[i][j] = 'R';	
-				}
-				else{
-					count[i][j].ff += count[i-1][j].ff;
-					count[i][j].ss += count[i-1][j].ss;
-					ans[i][j] = 'D';
-				}
-			}
-		}
-
-		ans[1][1]='*';
-		ll i=n, j=n;
-		char ptr = ans[i][j];
-		string s="";
-		cout<<min(count[n][n].ff, count[n][n].ss)<<nl;
-		while(ptr!='*'){
-			s.pb(ptr);
-			if (ptr=='D')i--;
-			else if (ptr=='R')j--;
-			ptr = ans[i][j];
-		}
-		reverse(all(s));
-		cout<<s<<nl;
+		for (int i=1;i<zero_pos.ss;i++) cout<<"R";
+		for (int i=1;i<n;i++) cout<<"D";
+		for (int i=zero_pos.ss+1;i<=n;i++) cout<<"R";
 	}
 }
 

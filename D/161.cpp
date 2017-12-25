@@ -20,7 +20,7 @@
 #define mne(a)        *min_element(all(a))
 
 #define lb(x, k)   lower_bound(all(x), k)-x.begin()
-//first element not less than (i.e. greater or equal to) k
+//first element greater or equal to k
 #define ub(x, k)   upper_bound(all(x), k)-x.begin()
 //first element greater than k
 
@@ -45,31 +45,39 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vector<pair<int, int>>v;
-vi a(2004), b(2004);
+vvi G(50004);
+vi visited(50004);
+int dist[50004][504];
+ll ans = 0;
+int n, k;
+
+void calculate(int node, int parent){
+	if (!visited[node]){
+		visited[node] = 1;
+		dist[node][0] = 1;
+		for (int child: G[node]){
+			if (child != parent){
+				calculate(child, node);
+				for (int i=1;i<=k;i++){
+					ans += dist[node][i-1]*dist[child][k-i];
+				}
+				for (int i=1;i<=k;i++){
+					dist[node][i] += dist[child][i-1];
+				}
+			}
+		}
+	}
+}
 
 void solve(){
-	string s;
-	cin>>s;
-	s="z"+s;
-	int l = s.length();
-	for (int i=0;i<l;i++){
-		if (s[i]=='a'){
-			if (i>=1) a[i]=1+a[i-1], b[i]=b[i-1];
-			else a[i]=1, b[i]=0;
-		}
-		else{
-			if (i>=1) a[i]=a[i-1], b[i]=1+b[i-1];
-			else a[i]=0, b[i]=1;
-		}
+	cin>>n>>k;
+	int a, b;
+	for (int i=0;i<n-1;i++){
+		cin>>a>>b;
+		G[a].pb(b);
+		G[b].pb(a);
 	}
-	int ans=-inf;
-	for (int i=1;i<l;i++){
-		for (int j=i;j<l;j++){
-			ans = max(ans, a[i]+a[l-1]-a[j]+b[j]-b[i]);
-			cout<<i<<" "<<j<<" "<<a[i]+a[l-1]-a[j]+b[j]-b[i]<<nl;
-		}
-	}
+	calculate(1, 0);
 	cout<<ans<<nl;
 }
 

@@ -45,32 +45,75 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vector<pair<int, int>>v;
-vi a(2004), b(2004);
-
 void solve(){
+	int n, k;
 	string s;
+	cin>>n>>k;
 	cin>>s;
-	s="z"+s;
+	int changes = 0;
 	int l = s.length();
-	for (int i=0;i<l;i++){
-		if (s[i]=='a'){
-			if (i>=1) a[i]=1+a[i-1], b[i]=b[i-1];
-			else a[i]=1, b[i]=0;
+	if (k==2){
+		int ab=0, ba=0;
+		for (int i=0;i<l;i++){
+			if (i&1){
+				ab += 'B' - s[i];
+				ba += s[i] - 'A';
+			}
+			else{
+				ab += s[i] - 'A';
+				ba += 'B' - s[i];
+			}
+		}
+		int flag;
+		ab<ba ? flag=1 : flag = 0;
+		if (flag){
+			cout<<ab<<nl;
+			while(l>1){
+				cout<<"AB";
+				l-=2;
+			}
+			if (l) cout<<"A"<<nl;
 		}
 		else{
-			if (i>=1) a[i]=a[i-1], b[i]=1+b[i-1];
-			else a[i]=0, b[i]=1;
+			cout<<ba<<nl;
+			while(l>1){
+				cout<<"BA";
+				l-=2;
+			}
+			if (l) cout<<"B"<<nl;
 		}
 	}
-	int ans=-inf;
-	for (int i=1;i<l;i++){
-		for (int j=i;j<l;j++){
-			ans = max(ans, a[i]+a[l-1]-a[j]+b[j]-b[i]);
-			cout<<i<<" "<<j<<" "<<a[i]+a[l-1]-a[j]+b[j]-b[i]<<nl;
+	else{
+		for (int i=0;i<l-1;i++){
+			if (s[i]==s[i+1]){
+				int s_index = i;
+				while (s[i]==s[i+1] && i<l-1) i++;
+				
+				int count = i-s_index+1;
+				int loop_start = s_index;
+				char c = (s[s_index]-65+1)%k;
+				
+				if (count&1) loop_start++;
+				else{
+					if (s_index == 0);
+					else if (i == l-1) loop_start++;
+					else if (s[s_index-1] == s[i+1]){
+						if (c+65==s[s_index-1]){
+							c+=1;
+							c%=k;
+						}
+					}
+					else if (s[s_index-1]==c+65) loop_start++;
+				}
+				c+=65;
+				for (int j=loop_start;j<=i;j+=2){
+					s[j] = c;
+					changes++;
+				}
+			}
 		}
+		cout<<changes<<nl<<s<<nl;
 	}
-	cout<<ans<<nl;
 }
 
 int main(){

@@ -20,7 +20,7 @@
 #define mne(a)        *min_element(all(a))
 
 #define lb(x, k)   lower_bound(all(x), k)-x.begin()
-//first element not less than (i.e. greater or equal to) k
+//first element greater or equal to k
 #define ub(x, k)   upper_bound(all(x), k)-x.begin()
 //first element greater than k
 
@@ -45,32 +45,29 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vector<pair<int, int>>v;
-vi a(2004), b(2004);
+vector<int> v;
 
 void solve(){
 	string s;
 	cin>>s;
-	s="z"+s;
-	int l = s.length();
-	for (int i=0;i<l;i++){
-		if (s[i]=='a'){
-			if (i>=1) a[i]=1+a[i-1], b[i]=b[i-1];
-			else a[i]=1, b[i]=0;
-		}
+	int n = s.length();
+	int maxx=-inf, count=0;
+	int res = 0;
+	for (int i=0;i<n;i++){
+		if (s[i]=='(')
+			v.pb(res), res = 0;
 		else{
-			if (i>=1) a[i]=a[i-1], b[i]=1+b[i-1];
-			else a[i]=0, b[i]=1;
+			if (v.size()!=0){
+				res += 2+v[v.size()-1];
+				v.ppb();
+				if (res > maxx)	count=0, maxx=res;
+				if (maxx==res) count++;
+			}
+			else res = 0;
 		}
 	}
-	int ans=-inf;
-	for (int i=1;i<l;i++){
-		for (int j=i;j<l;j++){
-			ans = max(ans, a[i]+a[l-1]-a[j]+b[j]-b[i]);
-			cout<<i<<" "<<j<<" "<<a[i]+a[l-1]-a[j]+b[j]-b[i]<<nl;
-		}
-	}
-	cout<<ans<<nl;
+	if (maxx==-inf) maxx=0, count=1;
+	cout<<maxx<<" "<<count<<nl;
 }
 
 int main(){

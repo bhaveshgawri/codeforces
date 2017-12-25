@@ -45,32 +45,27 @@ const int Max1 = 1e5 + 4;
 const int Max2 = 2e5 + 4;
 const int Mod = 1e9 + 7;
 
-vector<pair<int, int>>v;
-vi a(2004), b(2004);
-
 void solve(){
 	string s;
 	cin>>s;
-	s="z"+s;
 	int l = s.length();
-	for (int i=0;i<l;i++){
-		if (s[i]=='a'){
-			if (i>=1) a[i]=1+a[i-1], b[i]=b[i-1];
-			else a[i]=1, b[i]=0;
-		}
-		else{
-			if (i>=1) a[i]=a[i-1], b[i]=1+b[i-1];
-			else a[i]=0, b[i]=1;
+	for (int i=0;i<l-1;i++){
+		if (s[i]==s[i+1]){
+			int s_index = i;
+			while(s[i]==s[i+1] && i<l-1)i++;
+			int count = i-s_index+1;
+			char c = (s[s_index]-97+1)%26;
+			if (c==(s[i+1]-97)%26){
+				c+=1;
+				c%=26;
+			}
+			c+=97;
+			for (int j=s_index+1;j<=i;j+=2){
+				s[j] = c;
+			}
 		}
 	}
-	int ans=-inf;
-	for (int i=1;i<l;i++){
-		for (int j=i;j<l;j++){
-			ans = max(ans, a[i]+a[l-1]-a[j]+b[j]-b[i]);
-			cout<<i<<" "<<j<<" "<<a[i]+a[l-1]-a[j]+b[j]-b[i]<<nl;
-		}
-	}
-	cout<<ans<<nl;
+	cout<<s<<nl;
 }
 
 int main(){
