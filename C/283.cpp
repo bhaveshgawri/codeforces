@@ -37,22 +37,22 @@
 #define out4(a, b, c, d) out3(a, b, c), out(d)
 
 template <typename T> bool in(T &n){
-	n = 0;
-	bool got = false, negative = false;
-	char c = gc();
-	while( c < '0' || c > '9'){if (c == '-') negative = true; c = gc();}
-	while(c >= '0' && c <= '9'){got = true; n = n*10 + c-48; c = gc();}
-	if(negative) n = ~(n-1);
-	return got;
+    n = 0;
+    bool got = false, negative = false;
+    char c = gc();
+    while( c < '0' || c > '9'){if (c == '-') negative = true; c = gc();}
+    while(c >= '0' && c <= '9'){got = true; n = n*10 + c-48; c = gc();}
+    if(negative) n = ~(n-1);
+    return got;
 }
 template <typename T> void out(T n, char seperator = ' '){
-	if(n<0){pc('-'); n = -n;}
-	if(!n) {pc('0'); pc(seperator); return;}
-	char buff[22]; 
-	int len = 0;
-	while(n) buff[len++] = n%10+48,n/=10;
-	for(int i=len-1;i>=0;i--) pc(buff[i]);
-	pc(seperator);
+    if(n<0){pc('-'); n = -n;}
+    if(!n) {pc('0'); pc(seperator); return;}
+    char buff[22]; 
+    int len = 0;
+    while(n) buff[len++] = n%10+48,n/=10;
+    for(int i=len-1;i>=0;i--) pc(buff[i]);
+    pc(seperator);
 }
 
 #define inf      INT_MAX
@@ -75,58 +75,45 @@ typedef vector<vii> vvii;
 const int MOD = 1e9 + 7;
 const int MAX = 1e5 + 4;
 
-int M, odd_sum, eve_sum;
-bool stop_rec;
-vi v;
-vi weights;
+ll n;
+vl v(2*MAX);
+vl cache(2*MAX, -2);
 
-void calculate(int m, int last_weight, bool parity){
-	if (stop_rec) return;
-	if (m==M+1){
-		if (((M&1) && (odd_sum > eve_sum)) || (!(M&1) && (odd_sum < eve_sum))){
-			cout<<"YES"<<nl;
-			for (int i: v)cout<<i<<" ";
-				stop_rec = 1;
-		}
+ll calculate(ll x){
+	if (x<=0 || x>n) return 0;
+	if (cache[x] != -2) return cache[x];
+	ll ans=0, y=0, xbkp=x;
+	cache[x] = -1;
+	y += v[x-1];
+	x += v[x-1];
+	if (x > n) ans = y;
+	else{
+		y += v[x-1];
+		x -= v[x-1];
+		ll temp = calculate(x);
+		if (temp >= 0) ans = y+temp;
+		else ans = -1;
 	}
-	for (int weight: weights){
-		if (parity){
-			if (weight!= last_weight && weight+odd_sum > eve_sum){
-				v.pb(weight);
-				odd_sum += weight;
-				calculate(m+1, weight, !parity);
-				odd_sum -= weight;
-				v.ppb();
-			}
-		}
-		else{
-			if (weight!= last_weight && weight+eve_sum > odd_sum){
-				v.pb(weight);
-				eve_sum += weight;
-				calculate(m+1, weight, !parity);
-				eve_sum -= weight;
-				v.ppb();
-			}	
-		}
-	}
+	return cache[xbkp] = ans;
 }
 
 void solve(){
-	string s;
-	cin>>s;
-	for (int i=1;i<=10;i++){
-		if (s[i-1]=='1') weights.pb(i);
-	}
-	cin>>M;
-	calculate(1, 0, 1);
-	if (!stop_rec) cout<<"NO"<<nl;
+    cin>>n;
+    for (ll i=1;i<n;i++){
+    	cin>>v[i];
+    }
+    for (ll i=1;i<n;i++){
+    	v[0] = i, cache[1]=-2;
+    	ll y = calculate(1);
+    	cout<<y<<nl;
+    }
 }
 
 int main(){
-	nfs;
-	no_step;
-	//freopen("input.txt", "r", stdin);
-	//freopen("output.txt", "w", stdout);
-	solve();
-	return 0;
+    nfs;
+    no_step;
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
+    return 0;
 }

@@ -28,6 +28,12 @@
 #define ub(x, k)   upper_bound(all(x), k)-x.begin()
 //first element greater than k
 
+
+#define trace1(a)           cerr<<#a<<": "<<a<<nl
+#define trace2(a, b)        cerr<<#a<<": "<<a<<" | "<<#b<<": "<<b<<nl
+#define trace3(a, b, c)     cerr<<#a<<": "<<a<<" | "<<#b<<": "<<b<<" | "<<#c<<": "<<c<<nl
+#define trace4(a, b, c, d)  cerr<<#a<<": "<<a<<" | "<<#b<<": "<<b<<" | "<<#c<<": "<<c<<" | "<<#d<<": "<<d<<nl
+
 // fast i/o for integers
 #define in2(a, b)        in(a), in(b)
 #define in3(a, b, c)     in2(a, b), in(c)
@@ -37,22 +43,22 @@
 #define out4(a, b, c, d) out3(a, b, c), out(d)
 
 template <typename T> bool in(T &n){
-	n = 0;
-	bool got = false, negative = false;
-	char c = gc();
-	while( c < '0' || c > '9'){if (c == '-') negative = true; c = gc();}
-	while(c >= '0' && c <= '9'){got = true; n = n*10 + c-48; c = gc();}
-	if(negative) n = ~(n-1);
-	return got;
+    n = 0;
+    bool got = false, negative = false;
+    char c = gc();
+    while( c < '0' || c > '9'){if (c == '-') negative = true; c = gc();}
+    while(c >= '0' && c <= '9'){got = true; n = n*10 + c-48; c = gc();}
+    if(negative) n = ~(n-1);
+    return got;
 }
 template <typename T> void out(T n, char seperator = ' '){
-	if(n<0){pc('-'); n = -n;}
-	if(!n) {pc('0'); pc(seperator); return;}
-	char buff[22]; 
-	int len = 0;
-	while(n) buff[len++] = n%10+48,n/=10;
-	for(int i=len-1;i>=0;i--) pc(buff[i]);
-	pc(seperator);
+    if(n<0){pc('-'); n = -n;}
+    if(!n) {pc('0'); pc(seperator); return;}
+    char buff[22]; 
+    int len = 0;
+    while(n) buff[len++] = n%10+48,n/=10;
+    for(int i=len-1;i>=0;i--) pc(buff[i]);
+    pc(seperator);
 }
 
 #define inf      INT_MAX
@@ -75,58 +81,45 @@ typedef vector<vii> vvii;
 const int MOD = 1e9 + 7;
 const int MAX = 1e5 + 4;
 
-int M, odd_sum, eve_sum;
-bool stop_rec;
-vi v;
-vi weights;
+int l;
+string s;
+vi count_(2004);
+vvi isPal(2004, vi(2004, -1));
+ll op=0;
+vii a;
 
-void calculate(int m, int last_weight, bool parity){
-	if (stop_rec) return;
-	if (m==M+1){
-		if (((M&1) && (odd_sum > eve_sum)) || (!(M&1) && (odd_sum < eve_sum))){
-			cout<<"YES"<<nl;
-			for (int i: v)cout<<i<<" ";
-				stop_rec = 1;
-		}
-	}
-	for (int weight: weights){
-		if (parity){
-			if (weight!= last_weight && weight+odd_sum > eve_sum){
-				v.pb(weight);
-				odd_sum += weight;
-				calculate(m+1, weight, !parity);
-				odd_sum -= weight;
-				v.ppb();
-			}
-		}
-		else{
-			if (weight!= last_weight && weight+eve_sum > odd_sum){
-				v.pb(weight);
-				eve_sum += weight;
-				calculate(m+1, weight, !parity);
-				eve_sum -= weight;
-				v.ppb();
-			}	
-		}
-	}
+bool calculate(int i, int j){
+	if (isPal[i][j] != -1) return isPal[i][j];
+	if (i>j || i>=l || j>=l) return isPal[i][j] = 0;
+	if (i==j) return isPal[i][j] = 1;
+	if (i+1==j) return isPal[i][j] = (s[i]==s[j]);
+	if (s[i]==s[j]) return isPal[i][j] = calculate(i+1, j-1);
+	return 0;
 }
 
 void solve(){
-	string s;
-	cin>>s;
-	for (int i=1;i<=10;i++){
-		if (s[i-1]=='1') weights.pb(i);
-	}
-	cin>>M;
-	calculate(1, 0, 1);
-	if (!stop_rec) cout<<"NO"<<nl;
+    cin>>s;
+    l=s.length();
+    for (int i=0;i<l;i++){
+    	for (int j=0;j<l;j++){
+			isPal[i][j] = calculate(i, j);
+			if (isPal[i][j]) count_[i]++;
+    	}
+    }
+	ll ans = 0;
+	for (int i=l-1;i>=0;i--) count_[i]+=count_[i+1];
+	for (int i=0;i<l;i++) 
+		for (int j=0;j<l;j++)
+		if (isPal[i][j])
+				ans+=count_[j+1];
+	cout<<ans<<nl;
 }
 
 int main(){
-	nfs;
-	no_step;
-	//freopen("input.txt", "r", stdin);
-	//freopen("output.txt", "w", stdout);
-	solve();
-	return 0;
+    nfs;
+    no_step;
+    //freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+    solve();
+    return 0;
 }

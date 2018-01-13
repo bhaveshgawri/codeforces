@@ -75,51 +75,34 @@ typedef vector<vii> vvii;
 const int MOD = 1e9 + 7;
 const int MAX = 1e5 + 4;
 
-int M, odd_sum, eve_sum;
-bool stop_rec;
-vi v;
-vi weights;
+int n, m;
+vi v(1000004);
+vvi cache(1004, vi(1004, -1));
 
-void calculate(int m, int last_weight, bool parity){
-	if (stop_rec) return;
-	if (m==M+1){
-		if (((M&1) && (odd_sum > eve_sum)) || (!(M&1) && (odd_sum < eve_sum))){
-			cout<<"YES"<<nl;
-			for (int i: v)cout<<i<<" ";
-				stop_rec = 1;
-		}
-	}
-	for (int weight: weights){
-		if (parity){
-			if (weight!= last_weight && weight+odd_sum > eve_sum){
-				v.pb(weight);
-				odd_sum += weight;
-				calculate(m+1, weight, !parity);
-				odd_sum -= weight;
-				v.ppb();
-			}
-		}
-		else{
-			if (weight!= last_weight && weight+eve_sum > odd_sum){
-				v.pb(weight);
-				eve_sum += weight;
-				calculate(m+1, weight, !parity);
-				eve_sum -= weight;
-				v.ppb();
-			}	
-		}
-	}
+bool calculate(int sum, int start){
+	if (start == n) return !(sum%m);
+	if (!(sum%m)) return 1;
+	if (cache[sum][start]!=-1) return cache[sum][start];
+	else return cache[sum][start] = 
+				(calculate((sum+v[start])%m, start+1)%m)%m ||
+				calculate(sum, start+1)%m;
 }
 
 void solve(){
-	string s;
-	cin>>s;
-	for (int i=1;i<=10;i++){
-		if (s[i-1]=='1') weights.pb(i);
+	cin>>n>>m;   
+	for (int i=0;i<n;i++){
+		cin>>v[i];
+		v[i] %= m;
 	}
-	cin>>M;
-	calculate(1, 0, 1);
-	if (!stop_rec) cout<<"NO"<<nl;
+	if (n>=m){
+		cout<<"YES"<<nl;
+		return;
+	}
+	bool ans = 0;
+	for (int i=0;i<n;i++){ 
+		ans = ans || calculate(v[i], i+1);
+	}
+	cout << (ans ? "YES" : "NO") <<nl;
 }
 
 int main(){
